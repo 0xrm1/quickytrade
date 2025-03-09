@@ -4,6 +4,7 @@ const Binance = require('binance-api-node').default;
 const { authenticate } = require('../middleware/authMiddleware');
 const User = require('../models/userModel');
 const authUtils = require('../utils/authUtils');
+const fetch = require('node-fetch');
 
 // Apply authentication middleware to all routes
 router.use(authenticate);
@@ -414,6 +415,27 @@ router.post('/history', (req, res) => {
   addToHistory(userId, command, result);
   
   res.json({ success: true });
+});
+
+// Get server IP address
+router.get('/server-ip', async (req, res) => {
+  try {
+    // Use a service to get the server's public IP
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    
+    res.json({
+      success: true,
+      serverIp: data.ip,
+      message: 'This is the server IP address that needs to be whitelisted in your Binance API settings.'
+    });
+  } catch (error) {
+    console.error('Error getting server IP:', error);
+    res.status(500).json({ 
+      error: 'Failed to retrieve server IP address',
+      success: false
+    });
+  }
 });
 
 module.exports = router; 

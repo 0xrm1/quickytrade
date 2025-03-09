@@ -114,6 +114,12 @@ export const terminalAPI = {
       .then(response => response.data);
   },
   
+  // Get server IP address
+  getServerIp: () => {
+    return api.get('/terminal/server-ip')
+      .then(response => response.data);
+  },
+  
   // Get market data
   getMarketData: (symbol: string) => {
     return api.get(`/market-data/${symbol}`)

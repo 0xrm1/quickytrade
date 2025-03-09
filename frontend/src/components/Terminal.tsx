@@ -199,6 +199,23 @@ const CommandForm = styled.form`
   width: 100%;
 `;
 
+const ButtonsContainer = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+const ActionButton = styled.button`
+  background-color: transparent;
+  color: #93c5fd;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  
+  &:hover {
+    color: #60a5fa;
+  }
+`;
+
 // TypeScript interfaces
 interface OutputItem {
   type: 'user' | 'system';
@@ -216,7 +233,8 @@ const Terminal: React.FC = () => {
     { type: 'system', content: 'Example commands:' },
     { type: 'system', content: '- "l btc 10000" (Open long position)' },
     { type: 'system', content: '- "s btc 10000" (Open short position)' },
-    { type: 'system', content: '- "close btcusdt" (Close position)' }
+    { type: 'system', content: '- "close btcusdt" (Close position)' },
+    { type: 'system', content: 'IMPORTANT: Make sure your Binance API has permissions for Futures trading and the server IP is whitelisted.' }
   ]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -307,12 +325,20 @@ const Terminal: React.FC = () => {
     } catch (err: any) {
       console.error('Command execution error:', err);
       
+      // Check for API key IP restriction error
+      const errorMessage = err.response?.data?.error || err.message;
+      let displayError = errorMessage;
+      
+      if (errorMessage && errorMessage.includes("Invalid API-key, IP, or permissions")) {
+        displayError = `${errorMessage}\n\nBinance API IP Restriction Error: You need to whitelist the server IP in your Binance API settings. Go to your Binance account > API Management and add this IP to the whitelist.`;
+      }
+      
       // Add error message to output
       setOutput(prev => [
         ...prev,
         { 
           type: 'system', 
-          content: err.response?.data?.error || err.message,
+          content: displayError,
           success: false
         }
       ]);
@@ -349,6 +375,40 @@ const Terminal: React.FC = () => {
     setShowInfo(prev => !prev);
   };
   
+  // Get server IP
+  const getServerIp = async () => {
+    try {
+      setLoading(true);
+      const result = await terminalAPI.getServerIp();
+      
+      // Add result to output
+      setOutput(prev => [
+        ...prev,
+        { 
+          type: 'system', 
+          content: `Server IP: ${result.serverIp}\n\nYou need to whitelist this IP in your Binance API settings.\nGo to your Binance account > API Management and add this IP to the whitelist.`,
+          success: true
+        }
+      ]);
+      
+    } catch (err: any) {
+      console.error('Error getting server IP:', err);
+      
+      // Add error message to output
+      setOutput(prev => [
+        ...prev,
+        { 
+          type: 'system', 
+          content: `Failed to get server IP: ${err.message}`,
+          success: false
+        }
+      ]);
+      
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   return (
     <TerminalContainer>
       <TerminalHeader>
@@ -370,11 +430,17 @@ const Terminal: React.FC = () => {
                   <li><code>balance</code> - Show account balance</li>
                   <li><code>help</code> - Show all available commands</li>
                 </ul>
+                <p style={{ marginTop: '10px', color: '#ef4444' }}>
+                  <strong>Note:</strong> Make sure your Binance API has permissions for Futures trading and the server IP is whitelisted.
+                </p>
               </InfoTooltip>
             )}
           </div>
         </TitleContainer>
-        <ClearButton onClick={clearHistory}>Clear</ClearButton>
+        <ButtonsContainer>
+          <ActionButton onClick={getServerIp} disabled={loading}>Show Server IP</ActionButton>
+          <ActionButton onClick={clearHistory}>Clear</ActionButton>
+        </ButtonsContainer>
       </TerminalHeader>
       
       <TerminalOutput ref={outputRef}>
