@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// API base URL from environment variables or fallback to the deployed URL
-const API_URL = process.env.REACT_APP_API_URL || 'https://oriontrade-api.onrender.com/api';
+// Base API URL
+export const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 // Create axios instance
 const api = axios.create({

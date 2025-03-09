@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 import axios from 'axios';
+import { API_URL } from '../services/api';
 
 // Define types
 interface User {
@@ -57,9 +58,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const register = async (email: string, password: string) => {
     try {
       setIsLoading(true);
-      // Use the environment variable or fallback to the deployed URL
-      const apiUrl = process.env.REACT_APP_API_URL || 'https://oriontrade-api.onrender.com/api';
-      const response = await axios.post(`${apiUrl}/users/register`, {
+      const response = await axios.post(`${API_URL}/users/register`, {
         email,
         password
       });
@@ -85,9 +84,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (email: string, password: string) => {
     try {
       setIsLoading(true);
-      // Use the environment variable or fallback to the deployed URL
-      const apiUrl = process.env.REACT_APP_API_URL || 'https://oriontrade-api.onrender.com/api';
-      const response = await axios.post(`${apiUrl}/users/login`, {
+      const response = await axios.post(`${API_URL}/users/login`, {
         email,
         password
       });
