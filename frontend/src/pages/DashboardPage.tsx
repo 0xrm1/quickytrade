@@ -4,10 +4,10 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import News from '../components/News';
 import SolanaDex from '../components/SolanaDex';
+import Watchlist from '../components/Watchlist';
 import { createWebSocketConnection } from '../services/api';
 
 // These components will be implemented later
-const Watchlist = () => <div>Watchlist Component</div>;
 const Positions = () => <div>Positions Component</div>;
 const Terminal = () => <div>Terminal Component</div>;
 const QuickButtonsBar = () => <div>QuickButtonsBar Component</div>;
@@ -77,9 +77,6 @@ const WatchlistContainer = styled.div`
   grid-column: 1;
   grid-row: 1;
   height: 320px;
-  background-color: #111827;
-  border-radius: 8px;
-  padding: 16px;
 `;
 
 const TerminalContainer = styled.div`

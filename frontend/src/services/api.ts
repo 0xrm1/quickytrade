@@ -61,6 +61,72 @@ export const createWebSocketConnection = () => {
   }
 };
 
+// Watchlist API functions
+export const watchlistAPI = {
+  // Get watchlist
+  getWatchlist: (listId?: number) => {
+    return api.get('/watchlist', { params: { listId } })
+      .then(response => response.data);
+  },
+  
+  // Add symbol to watchlist
+  addSymbol: (symbol: string, listId: number = 1) => {
+    return api.post('/watchlist/add', { symbol, listId })
+      .then(response => response.data);
+  },
+  
+  // Remove symbol from watchlist
+  removeSymbol: (symbol: string, listId: number = 1) => {
+    return api.delete(`/watchlist/remove/${symbol}`, { params: { listId } })
+      .then(response => response.data);
+  },
+  
+  // Sync watchlist with backend
+  syncWatchlist: (watchlist: any[]) => {
+    return api.post('/watchlist/sync', { watchlist })
+      .then(response => response.data);
+  },
+  
+  // Get ticker information for a symbol
+  getTicker: (symbol: string) => {
+    return api.get(`/watchlist/ticker/${symbol}`)
+      .then(response => response.data);
+  },
+  
+  // Get all available symbols
+  getSymbols: () => {
+    return api.get('/watchlist/symbols')
+      .then(response => response.data);
+  }
+};
+
+// Terminal API functions
+export const terminalAPI = {
+  // Execute command
+  executeCommand: (command: string) => {
+    return api.post('/terminal/execute', { command })
+      .then(response => response.data);
+  },
+  
+  // Get market data
+  getMarketData: (symbol: string) => {
+    return api.get(`/market-data/${symbol}`)
+      .then(response => response.data);
+  },
+  
+  // Place order
+  placeOrder: (orderData: any) => {
+    return api.post('/orders', orderData)
+      .then(response => response.data);
+  },
+  
+  // Get orders
+  getOrders: () => {
+    return api.get('/orders')
+      .then(response => response.data);
+  }
+};
+
 // API services
 const apiService = {
   // User authentication

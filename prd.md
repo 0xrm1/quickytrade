@@ -41,10 +41,10 @@
   - [x] Main dashboard container
   - [x] Responsive grid layout
   - [x] Navigation and header
-- [ ] Watchlist Component
-  - [ ] Display favorite trading pairs
-  - [ ] Real-time price updates
-  - [ ] Add/remove symbols
+- [x] Watchlist Component
+  - [x] Display favorite trading pairs
+  - [x] Real-time price updates
+  - [x] Add/remove symbols
 - [ ] Positions Component
   - [ ] Current open positions
   - [ ] Position details (entry, size, PnL)
@@ -73,10 +73,10 @@
   - [ ] POST `/api/positions` - Create new position
   - [ ] PUT `/api/positions/:id` - Update position
   - [ ] DELETE `/api/positions/:id` - Close position
-- [ ] Watchlist Routes
-  - [ ] GET `/api/watchlist` - Get user watchlist
-  - [ ] POST `/api/watchlist` - Add symbol to watchlist
-  - [ ] DELETE `/api/watchlist/:symbol` - Remove from watchlist
+- [x] Watchlist Routes
+  - [x] GET `/api/watchlist` - Get user watchlist
+  - [x] POST `/api/watchlist` - Add symbol to watchlist
+  - [x] DELETE `/api/watchlist/:symbol` - Remove from watchlist
 - [ ] Terminal Routes
   - [ ] GET `/api/market-data/:symbol` - Get market data
   - [ ] POST `/api/orders` - Place new order
@@ -124,7 +124,7 @@ CREATE TABLE users (
 - [x] API key encryption/decryption service
 - [x] Error handling (English messages)
 - [ ] Integrate positions routes
-- [ ] Integrate watchlist routes
+- [x] Integrate watchlist routes
 - [ ] Integrate terminal routes
 - [ ] Integrate quick button routes
 - [ ] Update server and app configuration
@@ -136,7 +136,7 @@ CREATE TABLE users (
 - [x] HTTP client (axios/fetch)
 - [x] Token handling in requests
 - [x] Dashboard layout implementation
-- [ ] Watchlist component integration
+- [x] Watchlist component integration
 - [ ] Positions component integration
 - [ ] Terminal component integration
 - [x] News component integration
