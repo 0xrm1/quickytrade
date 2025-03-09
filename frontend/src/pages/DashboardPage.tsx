@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import News from '../components/News';
 import SolanaDex from '../components/SolanaDex';
 import Watchlist from '../components/Watchlist';
@@ -42,6 +42,21 @@ const UserInfo = styled.div`
 `;
 
 const LogoutButton = styled.button`
+  background-color: transparent;
+  color: #4f46e5;
+  border: 1px solid #4f46e5;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: #4f46e5;
+    color: white;
+  }
+`;
+
+const ProfileButton = styled.button`
   background-color: transparent;
   color: #4f46e5;
   border: 1px solid #4f46e5;
@@ -140,6 +155,11 @@ const DashboardPage: React.FC = () => {
     logout();
     navigate('/login');
   };
+
+  // Handle profile navigation
+  const handleProfileClick = () => {
+    navigate('/profile');
+  };
   
   return (
     <DashboardContainer>
@@ -147,6 +167,7 @@ const DashboardPage: React.FC = () => {
         <Logo>OrionTrade Platform</Logo>
         <UserInfo>
           <span>{user?.email}</span>
+          <ProfileButton onClick={handleProfileClick}>Profile</ProfileButton>
           <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
         </UserInfo>
       </Header>
