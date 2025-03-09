@@ -11,7 +11,7 @@ import ProfilePage from './pages/ProfilePage';
 import DashboardPage from './pages/DashboardPage';
 
 // Styles
-import './App.css';
+import './styles/index.css';
 
 function App() {
   return (

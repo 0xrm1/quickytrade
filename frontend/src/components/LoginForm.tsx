@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import * as S from '../styles/PageStyles';
 
 /**
  * Login form component
@@ -48,15 +49,15 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="login-form">
-      <h2>Login</h2>
+    <S.FormContainer>
+      <S.FormTitle>Login</S.FormTitle>
       
-      {error && <div className="error-message">{error}</div>}
+      {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
       
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
+        <S.FormGroup>
+          <S.FormLabel htmlFor="email">Email</S.FormLabel>
+          <S.FormInput
             type="email"
             id="email"
             value={email}
@@ -64,11 +65,11 @@ const LoginForm: React.FC = () => {
             disabled={isSubmitting}
             required
           />
-        </div>
+        </S.FormGroup>
         
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
+        <S.FormGroup>
+          <S.FormLabel htmlFor="password">Password</S.FormLabel>
+          <S.FormInput
             type="password"
             id="password"
             value={password}
@@ -76,13 +77,13 @@ const LoginForm: React.FC = () => {
             disabled={isSubmitting}
             required
           />
-        </div>
+        </S.FormGroup>
         
-        <button type="submit" disabled={isSubmitting}>
+        <S.FormButton type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Logging in...' : 'Login'}
-        </button>
+        </S.FormButton>
       </form>
-    </div>
+    </S.FormContainer>
   );
 };
 

@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import * as S from '../styles/PageStyles';
+import styled from 'styled-components';
+
+// Özel stiller
+const PasswordHint = styled.small`
+  display: block;
+  color: #8f9bba;
+  font-size: 12px;
+  margin-top: 6px;
+  line-height: 1.4;
+  opacity: 0.8;
+`;
 
 /**
  * Registration form component
@@ -68,15 +80,15 @@ const RegisterForm: React.FC = () => {
   };
 
   return (
-    <div className="register-form">
-      <h2>Register</h2>
+    <S.FormContainer>
+      <S.FormTitle>Register</S.FormTitle>
       
-      {error && <div className="error-message">{error}</div>}
+      {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
       
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
+        <S.FormGroup>
+          <S.FormLabel htmlFor="email">Email</S.FormLabel>
+          <S.FormInput
             type="email"
             id="email"
             value={email}
@@ -84,11 +96,11 @@ const RegisterForm: React.FC = () => {
             disabled={isSubmitting}
             required
           />
-        </div>
+        </S.FormGroup>
         
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
+        <S.FormGroup>
+          <S.FormLabel htmlFor="password">Password</S.FormLabel>
+          <S.FormInput
             type="password"
             id="password"
             value={password}
@@ -97,12 +109,12 @@ const RegisterForm: React.FC = () => {
             required
             minLength={8}
           />
-          <small>Password must be at least 8 characters long</small>
-        </div>
+          <PasswordHint>Password must be at least 8 characters long</PasswordHint>
+        </S.FormGroup>
         
-        <div className="form-group">
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
+        <S.FormGroup>
+          <S.FormLabel htmlFor="confirmPassword">Confirm Password</S.FormLabel>
+          <S.FormInput
             type="password"
             id="confirmPassword"
             value={confirmPassword}
@@ -110,13 +122,13 @@ const RegisterForm: React.FC = () => {
             disabled={isSubmitting}
             required
           />
-        </div>
+        </S.FormGroup>
         
-        <button type="submit" disabled={isSubmitting}>
+        <S.FormButton type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Registering...' : 'Register'}
-        </button>
+        </S.FormButton>
       </form>
-    </div>
+    </S.FormContainer>
   );
 };
 

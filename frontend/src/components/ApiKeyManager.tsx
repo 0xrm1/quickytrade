@@ -1,5 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import apiService from '../services/api';
+import * as S from '../styles/PageStyles';
+import styled from 'styled-components';
+
+// Özel stiller
+const ApiKeyContainer = styled.div`
+  margin-top: 0;
+`;
+
+const ApiKeyInfo = styled.div`
+  margin-top: 16px;
+  color: #8f9bba;
+  font-size: 14px;
+  line-height: 1.5;
+  
+  p {
+    margin-bottom: 12px;
+  }
+  
+  strong {
+    color: #ffffff;
+    font-weight: 500;
+  }
+`;
 
 /**
  * API key management component
@@ -75,16 +98,16 @@ const ApiKeyManager: React.FC = () => {
   }
 
   return (
-    <div className="api-key-manager">
-      <h2>Binance API Keys</h2>
+    <ApiKeyContainer>
+      <S.CardTitle>Binance API Keys</S.CardTitle>
       
-      {error && <div className="error-message">{error}</div>}
-      {success && <div className="success-message">{success}</div>}
+      {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
+      {success && <S.SuccessMessage>{success}</S.SuccessMessage>}
       
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="binanceApiKey">API Key</label>
-          <input
+        <S.FormGroup>
+          <S.FormLabel htmlFor="binanceApiKey">API Key</S.FormLabel>
+          <S.FormInput
             type="text"
             id="binanceApiKey"
             value={binanceApiKey}
@@ -92,11 +115,11 @@ const ApiKeyManager: React.FC = () => {
             disabled={isSubmitting}
             required
           />
-        </div>
+        </S.FormGroup>
         
-        <div className="form-group">
-          <label htmlFor="binanceSecretKey">Secret Key</label>
-          <input
+        <S.FormGroup>
+          <S.FormLabel htmlFor="binanceSecretKey">Secret Key</S.FormLabel>
+          <S.FormInput
             type="password"
             id="binanceSecretKey"
             value={binanceSecretKey}
@@ -104,22 +127,22 @@ const ApiKeyManager: React.FC = () => {
             disabled={isSubmitting}
             required
           />
-        </div>
+        </S.FormGroup>
         
-        <button type="submit" disabled={isSubmitting}>
+        <S.FormButton type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Updating...' : hasKeys ? 'Update Keys' : 'Save Keys'}
-        </button>
+        </S.FormButton>
       </form>
       
-      <div className="api-key-info">
+      <ApiKeyInfo>
         <p>
           Your API keys are encrypted and stored securely. They are only used to interact with the Binance API on your behalf.
         </p>
         <p>
           <strong>Note:</strong> For security reasons, we recommend creating API keys with read-only permissions if you don't need trading functionality.
         </p>
-      </div>
-    </div>
+      </ApiKeyInfo>
+    </ApiKeyContainer>
   );
 };
 

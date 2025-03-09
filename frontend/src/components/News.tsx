@@ -2,14 +2,28 @@ import React from 'react';
 import styled from 'styled-components';
 
 const NewsContainer = styled.div`
-  background-color: #111827;
+  background-color: #1b2839;
   border-radius: 8px;
-  border: 1px solid #1f2937;
+  border: 1px solid #2c3142;
   padding: 12px;
   color: #fff;
   height: 100%;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(215, 251, 115, 0.1);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 8px;
+    border: 1px solid rgba(215, 251, 115, 0.1);
+    pointer-events: none;
+  }
 `;
 
 const NewsHeader = styled.div`
@@ -20,11 +34,16 @@ const NewsHeader = styled.div`
 `;
 
 const Title = styled.div`
-  background-color: rgba(79, 70, 229, 0.8);
-  color: white;
-  padding: 4px 16px;
+  margin: 0;
+  padding: 6px 12px;
+  color: #d7fb73;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: transparent;
+  border: 1px solid #d7fb73;
   border-radius: 6px;
-  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
 `;
 
 const PlaceholderContent = styled.div`
@@ -41,6 +60,7 @@ const ComingSoonText = styled.div`
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 16px;
+  color: #d7fb73;
 `;
 
 const DescriptionText = styled.div`

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import News from '../components/News';
-import SolanaDex from '../components/SolanaDex';
 import Watchlist from '../components/Watchlist';
 import Terminal from '../components/Terminal';
 import QuickButtonsBar from '../components/QuickButtonsBar';
@@ -16,58 +15,104 @@ import { createWebSocketConnection } from '../services/api';
 const DashboardContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  background-color: #080f1a;
-  color: white;
+  min-height: 100vh;
+  background-color: #1b2839;
+  color: #fff;
 `;
 
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  border-bottom: 1px solid #1f2937;
+  padding: 0 24px;
+  background-color: #1b2839;
+  border-bottom: 1px solid #2c3142;
+  height: 70px;
+  box-sizing: border-box;
 `;
 
-const Logo = styled.h1`
+const Logo = styled.div`
   margin: 0;
-  font-size: 24px;
-  color: #4f46e5;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  overflow: visible;
+`;
+
+const LogoImage = styled.img`
+  height: 150px;
+  width: auto;
+  margin-top: -3px;
 `;
 
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
-`;
-
-const LogoutButton = styled.button`
-  background-color: transparent;
-  color: #4f46e5;
-  border: 1px solid #4f46e5;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s;
-
-  &:hover {
-    background-color: #4f46e5;
-    color: white;
+  gap: 12px;
+  background-color: #1b2839;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #2c3142;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(215, 251, 115, 0.1);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 8px;
+    border: 1px solid rgba(215, 251, 115, 0.1);
+    pointer-events: none;
   }
 `;
 
+const UserEmail = styled.span`
+  color: #ffffff;
+  font-size: 14px;
+  margin-right: 4px;
+  font-weight: 500;
+`;
+
 const ProfileButton = styled.button`
+  margin-left: 12px;
+  padding: 6px 12px;
   background-color: transparent;
-  color: #4f46e5;
-  border: 1px solid #4f46e5;
-  padding: 5px 10px;
-  border-radius: 4px;
+  color: #ffffff;
+  border: 1px solid #d7fb73;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s;
+  font-weight: 400;
 
   &:hover {
-    background-color: #4f46e5;
-    color: white;
+    background-color: rgba(215, 251, 115, 0.1);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
+const LogoutButton = styled.button`
+  margin-left: 12px;
+  padding: 6px 12px;
+  background-color: transparent;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 400;
+
+  &:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+  }
+  
+  &:active {
+    transform: scale(0.97);
   }
 `;
 
@@ -82,7 +127,7 @@ const ContentContainer = styled.div`
 const MainContent = styled.div`
   display: grid;
   grid-template-columns: minmax(0, 350px) minmax(0, 350px) 1fr;
-  grid-template-rows: minmax(0, auto) minmax(0, auto) 1fr;
+  grid-template-rows: minmax(0, auto) 1fr;
   gap: 16px;
   flex: 1;
   overflow: hidden;
@@ -99,29 +144,20 @@ const TerminalContainer = styled.div`
   grid-column: 2;
   grid-row: 1;
   height: 320px;
-  background-color: #111827;
-  border-radius: 8px;
-  padding: 16px;
 `;
 
 const PositionsContainer = styled.div`
   grid-column: 1 / span 2;
   grid-row: 2;
-  height: 320px;
-  background-color: #111827;
-  border-radius: 8px;
-  padding: 16px;
+  height: 100%;
+  min-height: 0; /* Bu önemli, overflow'un çalışması için */
+  display: flex;
+  flex-direction: column;
 `;
 
 const NewsContainer = styled.div`
   grid-column: 3;
-  grid-row: 1 / span 3;
-  height: 100%;
-`;
-
-const SolanaDexContainer = styled.div`
-  grid-column: 1 / span 2;
-  grid-row: 3;
+  grid-row: 1 / span 2;
   height: 100%;
 `;
 
@@ -164,9 +200,11 @@ const DashboardPage: React.FC = () => {
   return (
     <DashboardContainer>
       <Header>
-        <Logo>OrionTrade Platform</Logo>
+        <Logo>
+          <LogoImage src="/Dashlogo.png" alt="QuickyTrade Logo" />
+        </Logo>
         <UserInfo>
-          <span>{user?.email}</span>
+          <UserEmail>{user?.email}</UserEmail>
           <ProfileButton onClick={handleProfileClick}>Profile</ProfileButton>
           <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
         </UserInfo>
@@ -191,18 +229,14 @@ const DashboardPage: React.FC = () => {
           <NewsContainer>
             <News />
           </NewsContainer>
-          
-          <SolanaDexContainer>
-            <SolanaDex />
-          </SolanaDexContainer>
         </MainContent>
         
         <Footer>
-          © {new Date().getFullYear()} OrionTrade Platform | All rights reserved
+          © {new Date().getFullYear()} QuickyTrade Platform | All rights reserved
         </Footer>
       </ContentContainer>
     </DashboardContainer>
   );
 };
 
-export default DashboardPage; 
+export default DashboardPage;

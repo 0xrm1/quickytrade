@@ -1,6 +1,35 @@
-# OrionTrade Platform Backend
+# QuickyTrade Platform Backend
 
-This is the backend API for the OrionTrade Platform, a trading platform with user authentication and API key management.
+This is the backend application for the QuickyTrade Platform.
+
+## Documentation
+
+For detailed documentation, please refer to the [README.md](../README.md) file in the main project folder.
+
+## Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
+
+# Run in production
+npm start
+```
+
+## Environment Variables
+
+Environment variables that can be set in the `.env` file:
+
+```
+PORT=5000
+NODE_ENV=development
+DATABASE_URL=postgresql://username:password@localhost:5432/database
+JWT_SECRET=your_jwt_secret
+ENCRYPTION_KEY=your_encryption_key
+```
 
 ## Features
 

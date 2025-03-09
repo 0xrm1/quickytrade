@@ -1,0 +1,18 @@
+/* Main CSS File - Imports all modules */
+
+/* Base Styles */
+@import './reset.css';
+@import './typography.css';
+@import './layout.css';
+
+/* Component Styles */
+@import './buttons.css';
+@import './forms.css';
+
+/* Page Styles */
+@import './auth.css';
+@import './home.css';
+@import './profile.css';
+
+/* Responsive Styles */
+@import './responsive.css'; 

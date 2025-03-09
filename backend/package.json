@@ -10,7 +10,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "OrionTrade Platform Backend",
+  "description": "QuickyTrade Platform Backend",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "binance-api-node": "^0.12.9",

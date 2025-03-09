@@ -3,6 +3,45 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import ApiKeyManager from '../components/ApiKeyManager';
 import apiService from '../services/api';
+import * as S from '../styles/PageStyles';
+import styled from 'styled-components';
+
+// Özel stiller
+const ProfileContent = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 2fr;
+  }
+`;
+
+const ProfileInfo = styled(S.Card)`
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ProfileInfoItem = styled.div`
+  margin-bottom: 12px;
+  color: #8f9bba;
+  font-size: 14px;
+  line-height: 1.5;
+  
+  strong {
+    color: #ffffff;
+    font-weight: 500;
+    margin-right: 8px;
+  }
+`;
+
+const Loading = styled.div`
+  text-align: center;
+  padding: 40px;
+  color: #8f9bba;
+  font-size: 16px;
+`;
 
 /**
  * Profile page component
@@ -37,46 +76,50 @@ const ProfilePage: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div className="loading">Loading profile...</div>;
+    return (
+      <S.PageContainer>
+        <Loading>Loading profile...</Loading>
+      </S.PageContainer>
+    );
   }
 
   return (
-    <div className="profile-page">
-      <div className="container">
-        <div className="profile-header">
-          <h1>Your Profile</h1>
-          <div className="profile-actions">
-            <Link to="/dashboard" className="dashboard-button">
-              Go to Dashboard
+    <S.PageContainer>
+      <S.ContentContainer>
+        <S.PageHeader>
+          <S.PageTitle>Your Profile</S.PageTitle>
+          <S.ButtonContainer>
+            <Link to="/dashboard" style={{ textDecoration: 'none' }}>
+              <S.SecondaryButton>Go to Dashboard</S.SecondaryButton>
             </Link>
-            <button className="logout-button" onClick={handleLogout}>
-              Logout
-            </button>
-          </div>
-        </div>
+            <S.DangerButton onClick={handleLogout}>Logout</S.DangerButton>
+          </S.ButtonContainer>
+        </S.PageHeader>
 
-        {error && <div className="error-message">{error}</div>}
+        {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
 
-        <div className="profile-content">
-          <div className="profile-info">
-            <h2>Account Information</h2>
-            <p>
-              <strong>Email:</strong> {user?.email}
-            </p>
-            <p>
-              <strong>Account Created:</strong>{' '}
-              {user?.created_at
-                ? new Date(user.created_at).toLocaleDateString()
-                : 'N/A'}
-            </p>
-          </div>
+        <ProfileContent>
+          <ProfileInfo>
+            <S.CardTitle>Account Information</S.CardTitle>
+            <S.CardContent>
+              <ProfileInfoItem>
+                <strong>Email:</strong> {user?.email}
+              </ProfileInfoItem>
+              <ProfileInfoItem>
+                <strong>Account Created:</strong>{' '}
+                {user?.created_at
+                  ? new Date(user.created_at).toLocaleDateString()
+                  : 'N/A'}
+              </ProfileInfoItem>
+            </S.CardContent>
+          </ProfileInfo>
 
-          <div className="api-keys-section">
+          <S.Card>
             <ApiKeyManager />
-          </div>
-        </div>
-      </div>
-    </div>
+          </S.Card>
+        </ProfileContent>
+      </S.ContentContainer>
+    </S.PageContainer>
   );
 };
 

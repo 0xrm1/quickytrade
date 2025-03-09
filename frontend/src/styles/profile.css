@@ -1,0 +1,45 @@
+/* Profile Page Styles */
+.profile-page {
+  padding: 50px 0;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.profile-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.profile-info, .api-keys-section {
+  background-color: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info p {
+  margin-bottom: 10px;
+}
+
+.api-key-info {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.api-key-info p {
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+} 

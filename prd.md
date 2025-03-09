@@ -1,4 +1,4 @@
-# OrionTrade Platform User System Requirements Document
+# QuickyTrade Platform User System Requirements Document
 
 ## Technical Stack
 - [x] Frontend: React (TypeScript recommended)
