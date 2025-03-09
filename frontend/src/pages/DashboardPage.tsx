@@ -2,20 +2,15 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import News from '../components/News';
+import { createWebSocketConnection } from '../services/api';
 
 // These components will be implemented later
 const Watchlist = () => <div>Watchlist Component</div>;
 const Positions = () => <div>Positions Component</div>;
 const Terminal = () => <div>Terminal Component</div>;
-const News = () => <div>News Component</div>;
 const SolanaDex = () => <div>SolanaDex Component</div>;
 const QuickButtonsBar = () => <div>QuickButtonsBar Component</div>;
-
-// This function will be implemented in the API service
-const createWebSocketConnection = () => {
-  // Placeholder for WebSocket connection
-  return new WebSocket('wss://stream.binance.com:9443/ws');
-};
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -109,9 +104,6 @@ const NewsContainer = styled.div`
   grid-column: 3;
   grid-row: 1 / span 3;
   height: 100%;
-  background-color: #111827;
-  border-radius: 8px;
-  padding: 16px;
 `;
 
 const SolanaDexContainer = styled.div`

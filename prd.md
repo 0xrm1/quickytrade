@@ -53,10 +53,10 @@
   - [ ] Trading chart integration
   - [ ] Order entry form
   - [ ] Order history
-- [ ] News Component
-  - [ ] Crypto news feed
-  - [ ] Filtering by asset
-  - [ ] News impact indicators
+- [x] News Component
+  - [x] Crypto news feed
+  - [x] Filtering by asset
+  - [x] News impact indicators
 - [ ] SolanaDEX Component
   - [ ] Solana token swaps
   - [ ] Liquidity pools information
@@ -139,7 +139,7 @@ CREATE TABLE users (
 - [ ] Watchlist component integration
 - [ ] Positions component integration
 - [ ] Terminal component integration
-- [ ] News component integration
+- [x] News component integration
 - [ ] SolanaDEX component integration
 - [ ] QuickButtonBar component integration
 - [x] Update app routing and navigation
