@@ -57,10 +57,10 @@
   - [x] Crypto news feed
   - [x] Filtering by asset
   - [x] News impact indicators
-- [ ] SolanaDEX Component
-  - [ ] Solana token swaps
-  - [ ] Liquidity pools information
-  - [ ] Transaction history
+- [x] SolanaDEX Component
+  - [x] Solana token swaps
+  - [x] Liquidity pools information
+  - [x] Transaction history
 - [ ] QuickButtonBar Component
   - [ ] Shortcut buttons for common actions
   - [ ] Customizable button configuration
@@ -140,7 +140,7 @@ CREATE TABLE users (
 - [ ] Positions component integration
 - [ ] Terminal component integration
 - [x] News component integration
-- [ ] SolanaDEX component integration
+- [x] SolanaDEX component integration
 - [ ] QuickButtonBar component integration
 - [x] Update app routing and navigation
 

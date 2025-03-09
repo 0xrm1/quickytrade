@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import News from '../components/News';
+import SolanaDex from '../components/SolanaDex';
 import { createWebSocketConnection } from '../services/api';
 
 // These components will be implemented later
 const Watchlist = () => <div>Watchlist Component</div>;
 const Positions = () => <div>Positions Component</div>;
 const Terminal = () => <div>Terminal Component</div>;
-const SolanaDex = () => <div>SolanaDex Component</div>;
 const QuickButtonsBar = () => <div>QuickButtonsBar Component</div>;
 
 const DashboardContainer = styled.div`
@@ -110,9 +110,6 @@ const SolanaDexContainer = styled.div`
   grid-column: 1 / span 2;
   grid-row: 3;
   height: 100%;
-  background-color: #111827;
-  border-radius: 8px;
-  padding: 16px;
 `;
 
 const Footer = styled.footer`
