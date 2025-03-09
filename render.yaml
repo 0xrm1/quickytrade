@@ -23,10 +23,9 @@ services:
           property: connectionString
 
   # Frontend Static Site
-  - type: web
+  - type: static
     name: oriontrade-app
     env: static
-    region: frankfurt
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/build
     routes:
@@ -35,12 +34,7 @@ services:
         destination: /index.html
     envVars:
       - key: REACT_APP_API_URL
-        fromService:
-          name: oriontrade-api
-          type: web
-          property: url
-        sync: false
-        postfix: /api
+        value: https://oriontrade-api.onrender.com/api
 
 # Database
 databases:
