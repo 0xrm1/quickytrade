@@ -7,10 +7,11 @@ import SolanaDex from '../components/SolanaDex';
 import Watchlist from '../components/Watchlist';
 import Terminal from '../components/Terminal';
 import QuickButtonsBar from '../components/QuickButtonsBar';
+import Positions from '../components/Positions';
 import { createWebSocketConnection } from '../services/api';
 
 // These components will be implemented later
-const Positions = () => <div>Positions Component</div>;
+// const Positions = () => <div>Positions Component</div>;
 
 const DashboardContainer = styled.div`
   display: flex;

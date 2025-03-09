@@ -45,10 +45,10 @@
   - [x] Display favorite trading pairs
   - [x] Real-time price updates
   - [x] Add/remove symbols
-- [ ] Positions Component
-  - [ ] Current open positions
-  - [ ] Position details (entry, size, PnL)
-  - [ ] Close position functionality
+- [x] Positions Component
+  - [x] Current open positions
+  - [x] Position details (entry, size, PnL)
+  - [x] Close position functionality
 - [x] Terminal Component
   - [x] Command-line interface
   - [x] Order execution
@@ -67,12 +67,10 @@
   - [x] Action execution
 
 ### 5. Backend Routes
-- [ ] Positions Routes
-  - [ ] GET `/api/positions` - Get all positions
-  - [ ] GET `/api/positions/:id` - Get position by ID
-  - [ ] POST `/api/positions` - Create new position
-  - [ ] PUT `/api/positions/:id` - Update position
-  - [ ] DELETE `/api/positions/:id` - Close position
+- [x] Positions Routes
+  - [x] GET `/api/positions` - Get all positions
+  - [x] POST `/api/positions/close` - Close position
+  - [x] POST `/api/positions/close-partial` - Close partial position
 - [x] Watchlist Routes
   - [x] GET `/api/watchlist` - Get user watchlist
   - [x] POST `/api/watchlist` - Add symbol to watchlist
@@ -123,7 +121,7 @@ CREATE TABLE users (
 - [x] JWT authentication middleware
 - [x] API key encryption/decryption service
 - [x] Error handling (English messages)
-- [ ] Integrate positions routes
+- [x] Integrate positions routes
 - [x] Integrate watchlist routes
 - [x] Integrate terminal routes
 - [x] Integrate quick button routes
@@ -137,7 +135,7 @@ CREATE TABLE users (
 - [x] Token handling in requests
 - [x] Dashboard layout implementation
 - [x] Watchlist component integration
-- [ ] Positions component integration
+- [x] Positions component integration
 - [x] Terminal component integration
 - [x] News component integration
 - [x] SolanaDEX component integration
@@ -149,7 +147,7 @@ CREATE TABLE users (
 - [x] Environment variables configuration
 - [x] Build & deployment scripts
 - [x] Health check endpoints
-- [ ] Update deployment configuration for new components
+- [x] Update deployment configuration for new components
 
 ---
 

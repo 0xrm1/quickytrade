@@ -166,6 +166,27 @@ export const quickButtonsAPI = {
   }
 };
 
+// Positions API functions
+export const positionsAPI = {
+  // Get all positions
+  getPositions: () => {
+    return api.get('/positions')
+      .then(response => response.data);
+  },
+  
+  // Close a position
+  closePosition: (symbol: string) => {
+    return api.post('/positions/close', { symbol })
+      .then(response => response.data);
+  },
+  
+  // Close a partial position
+  closePartialPosition: (symbol: string, quantity: number) => {
+    return api.post('/positions/close-partial', { symbol, quantity })
+      .then(response => response.data);
+  }
+};
+
 // API services
 const apiService = {
   // User authentication
@@ -219,17 +240,11 @@ const apiService = {
     getPositions: () => {
       return api.get('/positions');
     },
-    getPosition: (id: number) => {
-      return api.get(`/positions/${id}`);
+    closePosition: (symbol: string) => {
+      return api.post('/positions/close', { symbol });
     },
-    createPosition: (positionData: any) => {
-      return api.post('/positions', positionData);
-    },
-    updatePosition: (id: number, positionData: any) => {
-      return api.put(`/positions/${id}`, positionData);
-    },
-    closePosition: (id: number) => {
-      return api.delete(`/positions/${id}`);
+    closePartialPosition: (symbol: string, quantity: number) => {
+      return api.post('/positions/close-partial', { symbol, quantity });
     }
   },
   
