@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
 const watchlistRoutes = require('./routes/watchlistRoutes');
 const terminalRoutes = require('./routes/terminalRoutes');
+const quickButtonsRoutes = require('./routes/quickButtonsRoutes');
 
 // Load environment variables
 dotenv.config();
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/watchlist', watchlistRoutes);
 app.use('/api/terminal', terminalRoutes);
+app.use('/api/quick-buttons', quickButtonsRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
