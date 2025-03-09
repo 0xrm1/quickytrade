@@ -230,6 +230,25 @@ input:focus {
   margin-bottom: 30px;
 }
 
+.profile-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.dashboard-button {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #3498db;
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.dashboard-button:hover {
+  background-color: #2980b9;
+}
+
 .logout-button {
   background-color: #e74c3c;
 }

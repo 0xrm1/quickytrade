@@ -17,9 +17,14 @@ const HomePage: React.FC = () => {
           
           <div className="cta-buttons">
             {isAuthenticated ? (
-              <Link to="/profile" className="cta-button primary">
-                Go to Profile
-              </Link>
+              <>
+                <Link to="/dashboard" className="cta-button primary">
+                  Go to Dashboard
+                </Link>
+                <Link to="/profile" className="cta-button secondary">
+                  View Profile
+                </Link>
+              </>
             ) : (
               <>
                 <Link to="/login" className="cta-button primary">

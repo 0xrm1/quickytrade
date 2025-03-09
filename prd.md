@@ -36,7 +36,58 @@
   - [x] Encrypted data display
   - [x] Update mechanism
 
-### 4. Database Structure
+### 4. Dashboard Components
+- [x] Dashboard Layout
+  - [x] Main dashboard container
+  - [x] Responsive grid layout
+  - [x] Navigation and header
+- [ ] Watchlist Component
+  - [ ] Display favorite trading pairs
+  - [ ] Real-time price updates
+  - [ ] Add/remove symbols
+- [ ] Positions Component
+  - [ ] Current open positions
+  - [ ] Position details (entry, size, PnL)
+  - [ ] Close position functionality
+- [ ] Terminal Component
+  - [ ] Trading chart integration
+  - [ ] Order entry form
+  - [ ] Order history
+- [ ] News Component
+  - [ ] Crypto news feed
+  - [ ] Filtering by asset
+  - [ ] News impact indicators
+- [ ] SolanaDEX Component
+  - [ ] Solana token swaps
+  - [ ] Liquidity pools information
+  - [ ] Transaction history
+- [ ] QuickButtonBar Component
+  - [ ] Shortcut buttons for common actions
+  - [ ] Customizable button configuration
+  - [ ] Action execution
+
+### 5. Backend Routes
+- [ ] Positions Routes
+  - [ ] GET `/api/positions` - Get all positions
+  - [ ] GET `/api/positions/:id` - Get position by ID
+  - [ ] POST `/api/positions` - Create new position
+  - [ ] PUT `/api/positions/:id` - Update position
+  - [ ] DELETE `/api/positions/:id` - Close position
+- [ ] Watchlist Routes
+  - [ ] GET `/api/watchlist` - Get user watchlist
+  - [ ] POST `/api/watchlist` - Add symbol to watchlist
+  - [ ] DELETE `/api/watchlist/:symbol` - Remove from watchlist
+- [ ] Terminal Routes
+  - [ ] GET `/api/market-data/:symbol` - Get market data
+  - [ ] POST `/api/orders` - Place new order
+  - [ ] GET `/api/orders` - Get order history
+- [ ] QuickButton Routes
+  - [ ] GET `/api/quick-buttons` - Get user's quick buttons
+  - [ ] POST `/api/quick-buttons` - Create quick button
+  - [ ] PUT `/api/quick-buttons/:id` - Update quick button
+  - [ ] DELETE `/api/quick-buttons/:id` - Delete quick button
+
+### 6. Database Structure
 ```sql
 -- users table
 CREATE TABLE users (
@@ -47,9 +98,15 @@ CREATE TABLE users (
   binance_secret_key TEXT,         -- encrypted
   created_at TIMESTAMP DEFAULT NOW()
 );
+
+-- Additional tables to be added:
+-- watchlist table
+-- positions table
+-- orders table
+-- quick_buttons table
 ```
 
-### 5. Security Requirements
+### 7. Security Requirements
 - [x] Environment variables setup on Render:
   - [x] DATABASE_URL
   - [x] JWT_SECRET
@@ -66,6 +123,11 @@ CREATE TABLE users (
 - [x] JWT authentication middleware
 - [x] API key encryption/decryption service
 - [x] Error handling (English messages)
+- [ ] Integrate positions routes
+- [ ] Integrate watchlist routes
+- [ ] Integrate terminal routes
+- [ ] Integrate quick button routes
+- [ ] Update server and app configuration
 
 ### Frontend (React)
 - [x] Auth forms (Register/Login)
@@ -73,12 +135,21 @@ CREATE TABLE users (
 - [x] API key management UI
 - [x] HTTP client (axios/fetch)
 - [x] Token handling in requests
+- [x] Dashboard layout implementation
+- [ ] Watchlist component integration
+- [ ] Positions component integration
+- [ ] Terminal component integration
+- [ ] News component integration
+- [ ] SolanaDEX component integration
+- [ ] QuickButtonBar component integration
+- [x] Update app routing and navigation
 
 ### Deployment
 - [x] PostgreSQL setup on Render
 - [x] Environment variables configuration
 - [x] Build & deployment scripts
 - [x] Health check endpoints
+- [ ] Update deployment configuration for new components
 
 ---
 

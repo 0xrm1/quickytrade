@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import ApiKeyManager from '../components/ApiKeyManager';
 import apiService from '../services/api';
@@ -45,9 +45,14 @@ const ProfilePage: React.FC = () => {
       <div className="container">
         <div className="profile-header">
           <h1>Your Profile</h1>
-          <button className="logout-button" onClick={handleLogout}>
-            Logout
-          </button>
+          <div className="profile-actions">
+            <Link to="/dashboard" className="dashboard-button">
+              Go to Dashboard
+            </Link>
+            <button className="logout-button" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
         </div>
 
         {error && <div className="error-message">{error}</div>}
