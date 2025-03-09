@@ -108,6 +108,12 @@ export const terminalAPI = {
       .then(response => response.data);
   },
   
+  // Get command history
+  getCommandHistory: () => {
+    return api.get('/terminal/history')
+      .then(response => response.data);
+  },
+  
   // Get market data
   getMarketData: (symbol: string) => {
     return api.get(`/market-data/${symbol}`)

@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
 const watchlistRoutes = require('./routes/watchlistRoutes');
+const terminalRoutes = require('./routes/terminalRoutes');
 
 // Load environment variables
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(express.json());
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/watchlist', watchlistRoutes);
+app.use('/api/terminal', terminalRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

@@ -49,10 +49,10 @@
   - [ ] Current open positions
   - [ ] Position details (entry, size, PnL)
   - [ ] Close position functionality
-- [ ] Terminal Component
-  - [ ] Trading chart integration
-  - [ ] Order entry form
-  - [ ] Order history
+- [x] Terminal Component
+  - [x] Command-line interface
+  - [x] Order execution
+  - [x] Command history
 - [x] News Component
   - [x] Crypto news feed
   - [x] Filtering by asset
@@ -77,10 +77,10 @@
   - [x] GET `/api/watchlist` - Get user watchlist
   - [x] POST `/api/watchlist` - Add symbol to watchlist
   - [x] DELETE `/api/watchlist/:symbol` - Remove from watchlist
-- [ ] Terminal Routes
-  - [ ] GET `/api/market-data/:symbol` - Get market data
-  - [ ] POST `/api/orders` - Place new order
-  - [ ] GET `/api/orders` - Get order history
+- [x] Terminal Routes
+  - [x] POST `/api/terminal/execute` - Execute terminal command
+  - [x] GET `/api/terminal/history` - Get command history
+  - [x] POST `/api/terminal/history` - Add to command history
 - [ ] QuickButton Routes
   - [ ] GET `/api/quick-buttons` - Get user's quick buttons
   - [ ] POST `/api/quick-buttons` - Create quick button
@@ -138,7 +138,7 @@ CREATE TABLE users (
 - [x] Dashboard layout implementation
 - [x] Watchlist component integration
 - [ ] Positions component integration
-- [ ] Terminal component integration
+- [x] Terminal component integration
 - [x] News component integration
 - [x] SolanaDEX component integration
 - [ ] QuickButtonBar component integration
