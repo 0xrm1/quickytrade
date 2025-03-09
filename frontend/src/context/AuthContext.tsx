@@ -57,7 +57,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const register = async (email: string, password: string) => {
     try {
       setIsLoading(true);
-      const response = await axios.post('http://localhost:5000/api/users/register', {
+      // Use the environment variable or fallback to the deployed URL
+      const apiUrl = process.env.REACT_APP_API_URL || 'https://oriontrade-api.onrender.com/api';
+      const response = await axios.post(`${apiUrl}/users/register`, {
         email,
         password
       });
@@ -83,7 +85,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (email: string, password: string) => {
     try {
       setIsLoading(true);
-      const response = await axios.post('http://localhost:5000/api/users/login', {
+      // Use the environment variable or fallback to the deployed URL
+      const apiUrl = process.env.REACT_APP_API_URL || 'https://oriontrade-api.onrender.com/api';
+      const response = await axios.post(`${apiUrl}/users/login`, {
         email,
         password
       });
