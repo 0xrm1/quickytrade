@@ -227,27 +227,18 @@ router.post('/close', async (req, res) => {
 });
 
 /**
- * Close a partial position
- * @route POST /api/positions/close-partial
- * @access Private
+ * Close a partial position with market order
  */
 router.post('/close-partial', async (req, res) => {
   try {
     const { symbol, quantity } = req.body;
     
     if (!symbol || !quantity) {
-      return res.status(400).json({ error: 'Symbol or quantity not specified' });
+      return res.status(400).json({ error: 'Symbol and quantity are required' });
     }
     
-    // Create Binance client with user's API keys
-    let binanceClient;
-    try {
-      binanceClient = await createBinanceClient(req);
-    } catch (error) {
-      return res.status(403).json({ 
-        error: 'API keys not configured. Please add your Binance API keys in settings.'
-      });
-    }
+    // Create Binance client
+    const binanceClient = await createBinanceClient(req);
     
     // Get position information
     const positions = await binanceClient.futuresPositionRisk({ symbol });
@@ -259,13 +250,11 @@ router.post('/close-partial', async (req, res) => {
     const position = positions[0];
     const positionAmt = parseFloat(position.positionAmt);
     const side = positionAmt > 0 ? 'SELL' : 'BUY';
-    const totalQuantity = Math.abs(positionAmt);
     
-    // Quantity to close should not be greater than total position quantity
-    if (parseFloat(quantity) > totalQuantity) {
-      return res.status(400).json({ 
-        error: `Quantity to close (${quantity}) cannot be greater than total position quantity (${totalQuantity})` 
-      });
+    // Ensure quantity is not greater than position size
+    const positionSize = Math.abs(positionAmt);
+    if (quantity > positionSize) {
+      return res.status(400).json({ error: `Quantity (${quantity}) exceeds position size (${positionSize})` });
     }
     
     // Get precision for the symbol
@@ -278,7 +267,7 @@ router.post('/close-partial', async (req, res) => {
       symbol: symbol,
       side: side,
       type: 'MARKET',
-      quantity: parseFloat(quantity).toFixed(precision),
+      quantity: quantity.toFixed(precision),
       reduceOnly: true
     });
     
@@ -289,10 +278,482 @@ router.post('/close-partial', async (req, res) => {
       side: order.side,
       price: order.price,
       quantity: order.origQty,
-      message: `Partial position closed: ${symbol}, Quantity: ${quantity}`
+      message: `Partial position closed: ${symbol}`
     });
   } catch (error) {
     console.error('Error closing partial position:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * Place a limit order to close a position
+ */
+router.post('/limit-close', async (req, res) => {
+  try {
+    const { symbol, price, quantity } = req.body;
+    
+    if (!symbol || !price || !quantity) {
+      return res.status(400).json({ error: 'Symbol, price and quantity are required' });
+    }
+    
+    // Create Binance client
+    const binanceClient = await createBinanceClient(req);
+    
+    // Get position information
+    const positions = await binanceClient.futuresPositionRisk({ symbol });
+    
+    if (positions.length === 0 || parseFloat(positions[0].positionAmt) === 0) {
+      return res.status(404).json({ error: `No open position found for ${symbol}` });
+    }
+    
+    const position = positions[0];
+    const positionAmt = parseFloat(position.positionAmt);
+    const side = positionAmt > 0 ? 'SELL' : 'BUY';
+    
+    // Ensure quantity is not greater than position size
+    const positionSize = Math.abs(positionAmt);
+    if (quantity > positionSize) {
+      return res.status(400).json({ error: `Quantity (${quantity}) exceeds position size (${positionSize})` });
+    }
+    
+    // Get precision for the symbol
+    const precision = await getSymbolPrecision(symbol, binanceClient);
+    
+    console.log(`Placing limit order: ${symbol}, Price: ${price}, Quantity: ${quantity}, Precision: ${precision}`);
+    
+    // Place limit order
+    const order = await binanceClient.futuresOrder({
+      symbol: symbol,
+      side: side,
+      type: 'LIMIT',
+      price: price,
+      quantity: quantity.toFixed(precision),
+      timeInForce: 'GTC',
+      reduceOnly: true
+    });
+    
+    res.json({
+      success: true,
+      orderId: order.orderId,
+      symbol: order.symbol,
+      side: order.side,
+      price: order.price,
+      quantity: order.origQty,
+      message: `Limit order placed: ${symbol}`
+    });
+  } catch (error) {
+    console.error('Error placing limit order:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * Place a stop market order to close a position
+ */
+router.post('/stop-close', async (req, res) => {
+  try {
+    const { symbol, stopPrice, quantity } = req.body;
+    
+    if (!symbol || !stopPrice || !quantity) {
+      return res.status(400).json({ error: 'Symbol, stopPrice and quantity are required' });
+    }
+    
+    // Create Binance client
+    const binanceClient = await createBinanceClient(req);
+    
+    // Get position information
+    const positions = await binanceClient.futuresPositionRisk({ symbol });
+    
+    if (positions.length === 0 || parseFloat(positions[0].positionAmt) === 0) {
+      return res.status(404).json({ error: `No open position found for ${symbol}` });
+    }
+    
+    const position = positions[0];
+    const positionAmt = parseFloat(position.positionAmt);
+    const side = positionAmt > 0 ? 'SELL' : 'BUY';
+    const currentPrice = parseFloat(position.markPrice);
+    
+    // Validate stop price based on position side
+    if (side === 'SELL' && parseFloat(stopPrice) >= currentPrice) {
+      return res.status(400).json({ 
+        error: `Invalid stop price for LONG position. Stop price (${stopPrice}) must be below current price (${currentPrice})` 
+      });
+    }
+    
+    if (side === 'BUY' && parseFloat(stopPrice) <= currentPrice) {
+      return res.status(400).json({ 
+        error: `Invalid stop price for SHORT position. Stop price (${stopPrice}) must be above current price (${currentPrice})` 
+      });
+    }
+    
+    // Ensure quantity is not greater than position size
+    const positionSize = Math.abs(positionAmt);
+    if (quantity > positionSize) {
+      return res.status(400).json({ error: `Quantity (${quantity}) exceeds position size (${positionSize})` });
+    }
+    
+    // Get precision for the symbol
+    const precision = await getSymbolPrecision(symbol, binanceClient);
+    
+    console.log(`Placing stop market order: ${symbol}, Stop Price: ${stopPrice}, Quantity: ${quantity}, Precision: ${precision}`);
+    
+    // Place stop market order
+    const order = await binanceClient.futuresOrder({
+      symbol: symbol,
+      side: side,
+      type: 'STOP_MARKET',
+      stopPrice: stopPrice,
+      quantity: quantity.toFixed(precision),
+      reduceOnly: true
+    });
+    
+    res.json({
+      success: true,
+      orderId: order.orderId,
+      symbol: order.symbol,
+      side: order.side,
+      stopPrice: stopPrice,
+      quantity: order.origQty,
+      message: `Stop market order placed: ${symbol}`
+    });
+  } catch (error) {
+    console.error('Error placing stop market order:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * Get all open orders
+ */
+router.get('/open-orders', async (req, res) => {
+  try {
+    // Create Binance client
+    const binanceClient = await createBinanceClient(req);
+    
+    // Get all open orders
+    const openOrders = await binanceClient.futuresOpenOrders();
+    
+    // Format the response
+    const formattedOrders = openOrders.map(order => ({
+      orderId: order.orderId,
+      symbol: order.symbol,
+      side: order.side,
+      type: order.type,
+      price: order.price,
+      stopPrice: order.stopPrice || null,
+      origQty: order.origQty,
+      time: order.time,
+      reduceOnly: order.reduceOnly,
+      status: order.status
+    }));
+    
+    res.json({
+      success: true,
+      orders: formattedOrders
+    });
+  } catch (error) {
+    console.error('Error fetching open orders:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * Cancel an open order
+ */
+router.post('/cancel-order', async (req, res) => {
+  try {
+    const { symbol, orderId } = req.body;
+    
+    if (!symbol || !orderId) {
+      return res.status(400).json({ error: 'Symbol and orderId are required' });
+    }
+    
+    // Create Binance client
+    const binanceClient = await createBinanceClient(req);
+    
+    // Cancel the order
+    const result = await binanceClient.futuresCancelOrder({
+      symbol: symbol,
+      orderId: orderId
+    });
+    
+    res.json({
+      success: true,
+      orderId: result.orderId,
+      symbol: result.symbol,
+      status: result.status,
+      message: `Order cancelled: ${symbol} #${orderId}`
+    });
+  } catch (error) {
+    console.error('Error cancelling order:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * Cancel all open orders
+ */
+router.post('/cancel-all-orders', async (req, res) => {
+  try {
+    // Create Binance client
+    const binanceClient = await createBinanceClient(req);
+    
+    // Get all open orders
+    const openOrders = await binanceClient.futuresOpenOrders();
+    
+    if (openOrders.length === 0) {
+      return res.json({
+        success: true,
+        message: 'No open orders to cancel'
+      });
+    }
+    
+    // Group orders by symbol
+    const ordersBySymbol = {};
+    openOrders.forEach(order => {
+      if (!ordersBySymbol[order.symbol]) {
+        ordersBySymbol[order.symbol] = [];
+      }
+      ordersBySymbol[order.symbol].push(order);
+    });
+    
+    // Cancel all orders for each symbol
+    const results = [];
+    for (const symbol of Object.keys(ordersBySymbol)) {
+      const result = await binanceClient.futuresCancelAllOpenOrders({
+        symbol: symbol
+      });
+      results.push(result);
+    }
+    
+    res.json({
+      success: true,
+      results: results,
+      message: `All orders cancelled (${openOrders.length} orders)`
+    });
+  } catch (error) {
+    console.error('Error cancelling all orders:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * Place a stop market order at entry price
+ */
+router.post('/stop-entry', async (req, res) => {
+  try {
+    const { symbol } = req.body;
+    
+    if (!symbol) {
+      return res.status(400).json({ error: 'Symbol is required' });
+    }
+    
+    // Create Binance client
+    const binanceClient = await createBinanceClient(req);
+    
+    // Get position information
+    const positions = await binanceClient.futuresPositionRisk({ symbol });
+    
+    if (positions.length === 0 || parseFloat(positions[0].positionAmt) === 0) {
+      return res.status(404).json({ error: `No open position found for ${symbol}` });
+    }
+    
+    const position = positions[0];
+    const positionAmt = parseFloat(position.positionAmt);
+    const side = positionAmt > 0 ? 'SELL' : 'BUY';
+    const entryPrice = parseFloat(position.entryPrice);
+    const currentPrice = parseFloat(position.markPrice);
+    
+    // Validate stop price based on position side
+    if (side === 'SELL' && entryPrice >= currentPrice) {
+      return res.status(400).json({ 
+        error: `Invalid stop price for LONG position. Entry price (${entryPrice}) must be below current price (${currentPrice})` 
+      });
+    }
+    
+    if (side === 'BUY' && entryPrice <= currentPrice) {
+      return res.status(400).json({ 
+        error: `Invalid stop price for SHORT position. Entry price (${entryPrice}) must be above current price (${currentPrice})` 
+      });
+    }
+    
+    // Get precision for the symbol
+    const precision = await getSymbolPrecision(symbol, binanceClient);
+    
+    console.log(`Placing stop entry order: ${symbol}, Stop Price: ${entryPrice}, Quantity: ${Math.abs(positionAmt)}, Precision: ${precision}`);
+    
+    // Place stop market order
+    const order = await binanceClient.futuresOrder({
+      symbol: symbol,
+      side: side,
+      type: 'STOP_MARKET',
+      stopPrice: entryPrice.toFixed(2),
+      quantity: Math.abs(positionAmt).toFixed(precision),
+      reduceOnly: true
+    });
+    
+    res.json({
+      success: true,
+      orderId: order.orderId,
+      symbol: order.symbol,
+      side: order.side,
+      stopPrice: entryPrice,
+      quantity: order.origQty,
+      message: `Stop entry order placed: ${symbol} at ${entryPrice}`
+    });
+  } catch (error) {
+    console.error('Error placing stop entry order:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * Place a stop market order at 1% below/above entry price
+ */
+router.post('/percent-stop', async (req, res) => {
+  try {
+    const { symbol } = req.body;
+    
+    if (!symbol) {
+      return res.status(400).json({ error: 'Symbol is required' });
+    }
+    
+    // Create Binance client
+    const binanceClient = await createBinanceClient(req);
+    
+    // Get position information
+    const positions = await binanceClient.futuresPositionRisk({ symbol });
+    
+    if (positions.length === 0 || parseFloat(positions[0].positionAmt) === 0) {
+      return res.status(404).json({ error: `No open position found for ${symbol}` });
+    }
+    
+    const position = positions[0];
+    const positionAmt = parseFloat(position.positionAmt);
+    const side = positionAmt > 0 ? 'SELL' : 'BUY';
+    const entryPrice = parseFloat(position.entryPrice);
+    const currentPrice = parseFloat(position.markPrice);
+    
+    // Calculate stop price (1% below entry for LONG, 1% above entry for SHORT)
+    const stopPrice = side === 'SELL' 
+      ? entryPrice * 0.99  // 1% below entry for LONG
+      : entryPrice * 1.01; // 1% above entry for SHORT
+    
+    // Validate stop price based on position side
+    if (side === 'SELL' && stopPrice >= currentPrice) {
+      return res.status(400).json({ 
+        error: `Invalid stop price for LONG position. Stop price (${stopPrice}) must be below current price (${currentPrice})` 
+      });
+    }
+    
+    if (side === 'BUY' && stopPrice <= currentPrice) {
+      return res.status(400).json({ 
+        error: `Invalid stop price for SHORT position. Stop price (${stopPrice}) must be above current price (${currentPrice})` 
+      });
+    }
+    
+    // Get precision for the symbol
+    const precision = await getSymbolPrecision(symbol, binanceClient);
+    
+    console.log(`Placing 1% stop order: ${symbol}, Stop Price: ${stopPrice}, Quantity: ${Math.abs(positionAmt)}, Precision: ${precision}`);
+    
+    // Place stop market order
+    const order = await binanceClient.futuresOrder({
+      symbol: symbol,
+      side: side,
+      type: 'STOP_MARKET',
+      stopPrice: stopPrice.toFixed(2),
+      quantity: Math.abs(positionAmt).toFixed(precision),
+      reduceOnly: true
+    });
+    
+    res.json({
+      success: true,
+      orderId: order.orderId,
+      symbol: order.symbol,
+      side: order.side,
+      stopPrice: stopPrice,
+      quantity: order.origQty,
+      message: `1% stop order placed: ${symbol} at ${stopPrice.toFixed(2)}`
+    });
+  } catch (error) {
+    console.error('Error placing 1% stop order:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * Place a stop market order at 2% below/above entry price
+ */
+router.post('/percent-two-stop', async (req, res) => {
+  try {
+    const { symbol } = req.body;
+    
+    if (!symbol) {
+      return res.status(400).json({ error: 'Symbol is required' });
+    }
+    
+    // Create Binance client
+    const binanceClient = await createBinanceClient(req);
+    
+    // Get position information
+    const positions = await binanceClient.futuresPositionRisk({ symbol });
+    
+    if (positions.length === 0 || parseFloat(positions[0].positionAmt) === 0) {
+      return res.status(404).json({ error: `No open position found for ${symbol}` });
+    }
+    
+    const position = positions[0];
+    const positionAmt = parseFloat(position.positionAmt);
+    const side = positionAmt > 0 ? 'SELL' : 'BUY';
+    const entryPrice = parseFloat(position.entryPrice);
+    const currentPrice = parseFloat(position.markPrice);
+    
+    // Calculate stop price (2% below entry for LONG, 2% above entry for SHORT)
+    const stopPrice = side === 'SELL' 
+      ? entryPrice * 0.98  // 2% below entry for LONG
+      : entryPrice * 1.02; // 2% above entry for SHORT
+    
+    // Validate stop price based on position side
+    if (side === 'SELL' && stopPrice >= currentPrice) {
+      return res.status(400).json({ 
+        error: `Invalid stop price for LONG position. Stop price (${stopPrice}) must be below current price (${currentPrice})` 
+      });
+    }
+    
+    if (side === 'BUY' && stopPrice <= currentPrice) {
+      return res.status(400).json({ 
+        error: `Invalid stop price for SHORT position. Stop price (${stopPrice}) must be above current price (${currentPrice})` 
+      });
+    }
+    
+    // Get precision for the symbol
+    const precision = await getSymbolPrecision(symbol, binanceClient);
+    
+    console.log(`Placing 2% stop order: ${symbol}, Stop Price: ${stopPrice}, Quantity: ${Math.abs(positionAmt)}, Precision: ${precision}`);
+    
+    // Place stop market order
+    const order = await binanceClient.futuresOrder({
+      symbol: symbol,
+      side: side,
+      type: 'STOP_MARKET',
+      stopPrice: stopPrice.toFixed(2),
+      quantity: Math.abs(positionAmt).toFixed(precision),
+      reduceOnly: true
+    });
+    
+    res.json({
+      success: true,
+      orderId: order.orderId,
+      symbol: order.symbol,
+      side: order.side,
+      stopPrice: stopPrice,
+      quantity: order.origQty,
+      message: `2% stop order placed: ${symbol} at ${stopPrice.toFixed(2)}`
+    });
+  } catch (error) {
+    console.error('Error placing 2% stop order:', error);
     res.status(500).json({ error: error.message });
   }
 });

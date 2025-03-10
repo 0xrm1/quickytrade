@@ -1,6 +1,6 @@
 import React from 'react';
-import { Position, InputValues } from '../types';
-import { getSymbolPricePrecision } from '../utils';
+import { Position, InputValues, Order } from '../types';
+import { getSymbolPricePrecision, getSymbolQuantityPrecision } from '../utils';
 import * as S from './styles';
 
 interface PositionListProps {
@@ -12,11 +12,17 @@ interface PositionListProps {
   liveTickerData: any;
   percentageValues: any;
   showPercentSelector: any;
+  openOrders: Order[];
   handleInputChange: (symbol: string, field: string, value: string) => void;
   togglePercentSelector: (symbol: string) => void;
   handleQuickPercentSelect: (symbol: string, percent: number) => void;
   handlePercentageInputChange: (symbol: string, value: string) => void;
   handlePartialClosePosition: (symbol: string) => Promise<void>;
+  handleLimitClosePosition: (symbol: string, side: string) => void;
+  handleStopClosePosition: (symbol: string, side: string) => void;
+  handleStopEntryOrder: (symbol: string) => Promise<void>;
+  handlePercentStopOrder: (symbol: string) => Promise<void>;
+  handlePercentTwoStopOrder: (symbol: string) => Promise<void>;
 }
 
 const PositionList: React.FC<PositionListProps> = ({
@@ -28,11 +34,17 @@ const PositionList: React.FC<PositionListProps> = ({
   liveTickerData,
   percentageValues,
   showPercentSelector,
+  openOrders,
   handleInputChange,
   togglePercentSelector,
   handleQuickPercentSelect,
   handlePercentageInputChange,
-  handlePartialClosePosition
+  handlePartialClosePosition,
+  handleLimitClosePosition,
+  handleStopClosePosition,
+  handleStopEntryOrder,
+  handlePercentStopOrder,
+  handlePercentTwoStopOrder
 }) => {
   if (!initialLoadComplete && loading) {
     return <S.Loading>Loading...</S.Loading>;
@@ -58,7 +70,7 @@ const PositionList: React.FC<PositionListProps> = ({
             <th style={{ width: '55px', textAlign: 'center' }}>LIQ</th>
             <th style={{ width: '65px', textAlign: 'center' }}>PNL</th>
             <th style={{ width: '120px' }}></th>
-            <th style={{ width: '70px', textAlign: 'center' }}>QUICK STOP</th>
+            <th style={{ width: '70px', textAlign: 'center' }}>QUICKY STOP</th>
           </tr>
         </S.TableHead>
         <S.TableBody>
@@ -106,7 +118,10 @@ const PositionList: React.FC<PositionListProps> = ({
                     )}
                   </S.SymbolContainer>
                 </td>
-                <td style={{ textAlign: 'center' }}>{positionValueUSDT} USDT</td>
+                <td style={{ textAlign: 'center' }}>
+                  {positionValueUSDT} USDT 
+                  <span style={{ fontSize: '0.9em', color: '#ffffff' }}> ({positionSize.toFixed(getSymbolQuantityPrecision(position.symbol))})</span>
+                </td>
                 <td style={{ textAlign: 'right' }}>{entryPrice.toFixed(2)}</td>
                 <td style={{ textAlign: 'center' }}>{entryPrice.toFixed(2)}</td>
                 <td style={{ textAlign: 'center', color: '#f97316' }}>{liquidationPrice}</td>
@@ -122,15 +137,35 @@ const PositionList: React.FC<PositionListProps> = ({
                       <S.BasicOrderButtons>
                         <S.LimitOrderButton 
                           title="Limit Close"
-                          onClick={() => console.log("Limit close not implemented")}
+                          onClick={() => handleLimitClosePosition(position.symbol, side)}
                         >
                           Limit
+                          {(() => {
+                            const limitOrders = openOrders.filter(
+                              order => order.symbol === position.symbol && 
+                              order.type === 'LIMIT' && 
+                              order.reduceOnly
+                            );
+                            return limitOrders.length > 0 ? (
+                              <span style={{ fontSize: '9px', marginLeft: '2px' }}>({limitOrders.length})</span>
+                            ) : null;
+                          })()}
                         </S.LimitOrderButton>
                         <S.StopOrderButton 
                           title="Stop Loss"
-                          onClick={() => console.log("Stop loss not implemented")}
+                          onClick={() => handleStopClosePosition(position.symbol, side)}
                         >
                           Stop
+                          {(() => {
+                            const stopOrders = openOrders.filter(
+                              order => order.symbol === position.symbol && 
+                              (order.type === 'STOP_MARKET' || order.type === 'STOP') && 
+                              order.reduceOnly
+                            );
+                            return stopOrders.length > 0 ? (
+                              <span style={{ fontSize: '9px', marginLeft: '2px' }}>({stopOrders.length})</span>
+                            ) : null;
+                          })()}
                         </S.StopOrderButton>
                         <S.MarketOrderButton 
                           title="Market Close"
@@ -160,7 +195,7 @@ const PositionList: React.FC<PositionListProps> = ({
                           <S.InputField
                             type="text"
                             value={inputValues[position.symbol]?.quantity || ''}
-                            placeholder={positionSize.toFixed(3)}
+                            placeholder={positionSize.toFixed(getSymbolQuantityPrecision(position.symbol))}
                             onChange={(e) => handleInputChange(position.symbol, 'quantity', e.target.value)}
                           />
                         </S.InputGroup>
@@ -195,15 +230,21 @@ const PositionList: React.FC<PositionListProps> = ({
                     <S.QuickOrdersGrid>
                       <S.StopEntryOrderButton 
                         title="Stop order at Entry price"
-                        onClick={() => console.log("Stop entry not implemented")}
+                        onClick={() => handleStopEntryOrder(position.symbol)}
                       >
-                        stop entry
+                        Stop Entry
                       </S.StopEntryOrderButton>
                       <S.PercentStopOrderButton 
                         title="Stop order at 1% below the entry price"
-                        onClick={() => console.log("1% stop not implemented")}
+                        onClick={() => handlePercentStopOrder(position.symbol)}
                       >
-                        %1 stop
+                        1% Stop
+                      </S.PercentStopOrderButton>
+                      <S.PercentStopOrderButton 
+                        title="Stop order at 2% below the entry price"
+                        onClick={() => handlePercentTwoStopOrder(position.symbol)}
+                      >
+                        2% Stop
                       </S.PercentStopOrderButton>
                     </S.QuickOrdersGrid>
                   </S.QuickOrdersSection>

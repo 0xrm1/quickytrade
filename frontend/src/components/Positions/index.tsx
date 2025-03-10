@@ -22,10 +22,15 @@ const Positions: React.FC = () => {
     fetchPositionsUpdate,
     handleClosePosition,
     handlePartialClosePosition,
-    handleCloseAllPositions
+    handleCloseAllPositions,
+    handleLimitClosePosition,
+    handleStopClosePosition,
+    handleStopEntryOrder,
+    handlePercentStopOrder,
+    handlePercentTwoStopOrder
   } = usePositions();
   
-  const { openOrders, fetchOpenOrders } = useOrders();
+  const { openOrders, fetchOpenOrders, cancelOrder, cancelAllOrders } = useOrders();
   
   const { liveTickerData } = usePriceData(positions);
   
@@ -81,6 +86,18 @@ const Positions: React.FC = () => {
     return () => clearInterval(interval);
   }, [activeTab, fetchPositionsUpdate, fetchOpenOrders]);
   
+  // Veri güncelleme
+  useEffect(() => {
+    // 1 saniyede bir güncelle
+    const interval = setInterval(() => {
+      // Her iki veriyi de güncelle
+      fetchPositionsUpdate();
+      fetchOpenOrders();
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  }, [fetchPositionsUpdate, fetchOpenOrders]);
+  
   return (
     <S.PositionsContainer>
       <S.GlobalStyle />
@@ -115,14 +132,24 @@ const Positions: React.FC = () => {
           liveTickerData={liveTickerData}
           percentageValues={percentageValues}
           showPercentSelector={showPercentSelector}
+          openOrders={openOrders}
           handleInputChange={handleInputChange}
           togglePercentSelector={togglePercentSelector}
           handleQuickPercentSelect={handleQuickPercentSelect}
           handlePercentageInputChange={handlePercentageInputChange}
           handlePartialClosePosition={handlePartialClosePosition}
+          handleLimitClosePosition={handleLimitClosePosition}
+          handleStopClosePosition={handleStopClosePosition}
+          handleStopEntryOrder={handleStopEntryOrder}
+          handlePercentStopOrder={handlePercentStopOrder}
+          handlePercentTwoStopOrder={handlePercentTwoStopOrder}
         />
       ) : (
-        <OpenOrdersList openOrders={openOrders} />
+        <OpenOrdersList 
+          openOrders={openOrders} 
+          cancelOrder={cancelOrder} 
+          cancelAllOrders={cancelAllOrders} 
+        />
       )}
     </S.PositionsContainer>
   );

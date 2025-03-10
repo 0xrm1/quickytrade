@@ -1,20 +1,4 @@
-import styled, { keyframes } from 'styled-components';
-
-// Ripple animasyonu için keyframes tanımlaması
-export const ripple = keyframes`
-  0% {
-    transform: scale(0, 0);
-    opacity: 0.5;
-  }
-  20% {
-    transform: scale(25, 25);
-    opacity: 0.3;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(40, 40);
-  }
-`;
+import styled from 'styled-components';
 
 // Ana container
 export const QuickButtonsContainer = styled.div`
@@ -74,26 +58,6 @@ export const AddButton = styled.button`
   cursor: pointer;
   transition: all 0.2s;
   margin-right: 16px;
-  position: relative;
-  overflow: hidden;
-  
-  &:after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 5px;
-    height: 5px;
-    background: rgba(108, 141, 255, 0.5);
-    opacity: 0;
-    border-radius: 100%;
-    transform: scale(1, 1) translate(-50%, -50%);
-    transform-origin: 50% 50%;
-  }
-  
-  &:focus:not(:active)::after {
-    animation: ${ripple} 1s ease-out;
-  }
   
   &:hover {
     background-color: rgba(215, 251, 115, 0.1);

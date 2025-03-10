@@ -15,22 +15,6 @@ export const GlobalStyle = createGlobalStyle`
   }
 `;
 
-// Ripple animasyonu için keyframes tanımlaması
-export const ripple = keyframes`
-  0% {
-    transform: scale(0, 0);
-    opacity: 0.5;
-  }
-  20% {
-    transform: scale(25, 25);
-    opacity: 0.3;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(40, 40);
-  }
-`;
-
 // Buton stilleri için ortak CSS
 export const buttonStyles = css`
   border: none;
@@ -428,6 +412,8 @@ export const OrderCount = styled.span`
   color: #ffffff;
   margin-left: 4px;
   font-weight: 400;
+  position: relative;
+  top: -2px;
 `;
 
 export const QuantityInputContainer = styled.div`
@@ -600,27 +586,27 @@ export const QuickOrdersSection = styled.div`
 export const QuickOrdersGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 6px;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 1px;
   width: 100%;
 `;
 
 export const QuickOrderButton = styled.button`
   ${buttonStyles}
   width: 100%;
-  height: 20px;
-  font-size: 9px;
+  height: 16px;
+  font-size: 8px;
   font-weight: 400;
   border-radius: 4px;
   background-color: transparent;
-  color: #ffffff;
-  border: 1px solid #d7fb73;
+  color: #d7fb73;
+  border: none;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 0 6px;
+  gap: 2px;
+  padding: 0 2px;
   
   &:hover {
     background-color: rgba(215, 251, 115, 0.1);
@@ -633,7 +619,7 @@ export const QuickOrderButton = styled.button`
 
 export const StopEntryOrderButton = styled(QuickOrderButton)`
   background-color: transparent;
-  color: #ffffff;
+  color: #d7fb73;
   
   &:hover {
     background-color: rgba(215, 251, 115, 0.1);
@@ -642,7 +628,7 @@ export const StopEntryOrderButton = styled(QuickOrderButton)`
 
 export const PercentStopOrderButton = styled(QuickOrderButton)`
   background-color: transparent;
-  color: #ffffff;
+  color: #d7fb73;
   
   &:hover {
     background-color: rgba(215, 251, 115, 0.1);

@@ -1,22 +1,6 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { InfoModalProps } from '../types';
-
-// Ripple animasyonu için keyframes tanımlaması
-const ripple = keyframes`
-  0% {
-    transform: scale(0, 0);
-    opacity: 0.5;
-  }
-  20% {
-    transform: scale(25, 25);
-    opacity: 0.3;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(40, 40);
-  }
-`;
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -56,26 +40,6 @@ const CloseModalButton = styled.button`
   font-size: 18px;
   cursor: pointer;
   color: #fff;
-  position: relative;
-  overflow: hidden;
-  
-  &:after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 5px;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.3);
-    opacity: 0;
-    border-radius: 100%;
-    transform: scale(1, 1) translate(-50%, -50%);
-    transform-origin: 50% 50%;
-  }
-  
-  &:focus:not(:active)::after {
-    animation: ${ripple} 1s ease-out;
-  }
   
   &:active {
     transform: scale(0.97);
