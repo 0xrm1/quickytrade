@@ -75,13 +75,13 @@ const News: React.FC = () => {
   return (
     <NewsContainer>
       <NewsHeader>
-        <Title>News & Notifications</Title>
+        <Title>Dex Trading</Title>
       </NewsHeader>
       
       <PlaceholderContent>
-        <ComingSoonText>Coming soon...</ComingSoonText>
+        <ComingSoonText>Multiple Dex Trading</ComingSoonText>
         <DescriptionText>
-          This module is currently under development. Crypto news, Twitter and Telegram notifications will be displayed here.
+        Coming Soon... 
         </DescriptionText>
       </PlaceholderContent>
     </NewsContainer>

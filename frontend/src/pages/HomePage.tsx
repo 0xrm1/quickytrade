@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import * as S from '../styles/PageStyles';
@@ -28,6 +28,14 @@ const Logo = styled.div`
 const LogoImage = styled.img`
   height: 120px;
   width: auto;
+`;
+
+const BetaTag = styled.span`
+  font-size: 14px;
+  font-weight: 500;
+  color: #d7fb73;
+  margin-left: -5px;
+  margin-top: 10px;
 `;
 
 const HeroTitle = styled.h1`
@@ -89,11 +97,61 @@ const FeaturesSectionTitle = styled.h2`
   margin-right: auto;
 `;
 
+const Footer = styled.footer`
+  margin-top: 40px;
+  padding: 20px 0;
+  border-top: 1px solid rgba(215, 251, 115, 0.2);
+  text-align: center;
+`;
+
+const SocialLinks = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 16px;
+`;
+
+const SocialLink = styled.a`
+  color: #8f9bba;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+  
+  &:hover {
+    color: #d7fb73;
+  }
+`;
+
+const SocialIcon = styled.span`
+  margin-right: 8px;
+  font-size: 18px;
+`;
+
+const Copyright = styled.p`
+  color: #4b5563;
+  font-size: 14px;
+  margin-top: 16px;
+`;
+
 /**
  * Home page component
  */
 const HomePage: React.FC = () => {
   const { isAuthenticated } = useAuth();
+  const [copied, setCopied] = useState(false);
+  
+  // Handle email copy
+  const handleEmailCopy = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigator.clipboard.writeText('support@quickytrade.com');
+    setCopied(true);
+    
+    // Reset copied state after 1 seconds
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000);
+  };
 
   return (
     <S.PageContainer>
@@ -101,9 +159,10 @@ const HomePage: React.FC = () => {
         <HeroSection>
           <Logo>
             <LogoImage src="/Dashlogo.png" alt="QuickyTrade Logo" />
+            <BetaTag>(beta)</BetaTag>
           </Logo>
           <HeroTitle>Welcome to QuickyTrade Platform</HeroTitle>
-          <HeroSubtitle>Your advanced trading platform for cryptocurrency markets</HeroSubtitle>
+          <HeroSubtitle>Trade faster with our advanced trading platform</HeroSubtitle>
           
           <CTAButtons>
             {isAuthenticated ? (
@@ -153,26 +212,38 @@ const HomePage: React.FC = () => {
             </S.Card>
             
             <S.Card>
-              <S.CardTitle>Trading Tools</S.CardTitle>
+              <S.CardTitle>One-click Positions</S.CardTitle>
               <S.CardContent>
                 <p>
-                  Access advanced trading tools and analytics to make informed
-                  decisions in the cryptocurrency market.
+                Create custom shortcuts and open/close positions with one click.
                 </p>
               </S.CardContent>
             </S.Card>
             
             <S.Card>
-              <S.CardTitle>User-Friendly Interface</S.CardTitle>
+              <S.CardTitle>Dex and Cex Together</S.CardTitle>
               <S.CardContent>
                 <p>
-                  Enjoy a clean and intuitive interface designed for both beginners
-                  and experienced traders.
+                Use both your cex and dex account on the same page.
                 </p>
               </S.CardContent>
             </S.Card>
           </S.Grid>
         </FeaturesSection>
+        
+        <Footer>
+          <SocialLinks>
+            <SocialLink href="https://x.com/quicky_trade" target="_blank" rel="noopener noreferrer">
+              <SocialIcon>𝕏</SocialIcon>
+              @quicky_trade
+            </SocialLink>
+            <SocialLink href="#" onClick={handleEmailCopy}>
+              <SocialIcon>✉️</SocialIcon>
+              {copied ? "Copied!" : "support@quickytrade.com"}
+            </SocialLink>
+          </SocialLinks>
+          <Copyright>© {new Date().getFullYear()} QuickyTrade. All rights reserved.</Copyright>
+        </Footer>
       </S.ContentContainer>
     </S.PageContainer>
   );

@@ -1,0 +1,3 @@
+- Don't use %%%. In Powershell you have to give commands one by one.
+- Don't take the initiative and change the code.
+- After performing the commands, briefly and succinctly explain what you have done. don't be long-winded

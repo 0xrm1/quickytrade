@@ -53,6 +53,14 @@ const LogoImage = styled.img`
   width: auto;
 `;
 
+const BetaTag = styled.span`
+  font-size: 14px;
+  font-weight: 500;
+  color: #d7fb73;
+  margin-left: -5px;
+  margin-top: 10px;
+`;
+
 const AuthSubtitle = styled.p`
   font-size: 16px;
   color: #8f9bba;
@@ -69,6 +77,7 @@ const RegisterPage: React.FC = () => {
         <AuthHeader>
           <Logo>
             <LogoImage src="/Dashlogo.png" alt="QuickyTrade Logo" />
+            <BetaTag>(beta)</BetaTag>
           </Logo>
           <AuthSubtitle>Create your account to get started</AuthSubtitle>
         </AuthHeader>

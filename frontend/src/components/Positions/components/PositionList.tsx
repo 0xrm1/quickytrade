@@ -194,13 +194,13 @@ const PositionList: React.FC<PositionListProps> = ({
                   <S.QuickOrdersSection>
                     <S.QuickOrdersGrid>
                       <S.StopEntryOrderButton 
-                        title="Entry fiyatına stop emri"
+                        title="Stop order at Entry price"
                         onClick={() => console.log("Stop entry not implemented")}
                       >
                         stop entry
                       </S.StopEntryOrderButton>
                       <S.PercentStopOrderButton 
-                        title="Entry fiyatının %1 aşağısına stop emri"
+                        title="Stop order at 1% below the entry price"
                         onClick={() => console.log("1% stop not implemented")}
                       >
                         %1 stop

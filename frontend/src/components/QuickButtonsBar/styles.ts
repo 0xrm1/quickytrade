@@ -21,7 +21,7 @@ export const QuickButtonsContainer = styled.div`
   display: flex;
   align-items: center;
   background-color: #1b2839;
-  padding: 12px 16px;
+  padding: 0px 16px 2px 21px;
   border-radius: 8px;
   border: 1px solid #2c3142;
   overflow-x: auto;
@@ -46,7 +46,7 @@ export const QuickButtonsContainer = styled.div`
 // Başlık
 export const Title = styled.h3`
   margin: 0;
-  padding: 6px 12px;
+  padding: 4px 10px;
   color: #ffffff;
   font-size: 14px;
   font-weight: 500;
@@ -60,8 +60,8 @@ export const Title = styled.h3`
 
 // Buton ekleme butonu
 export const AddButton = styled.button`
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,9 +107,10 @@ export const AddButton = styled.button`
 // Butonlar wrapper
 export const ButtonsWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  padding-bottom: 20px;
   
   &::-webkit-scrollbar {
     height: 4px;
@@ -129,21 +130,25 @@ export const ButtonsWrapper = styled.div`
 export const ButtonWrapper = styled.div`
   position: relative;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  margin-right: 4px;
+  margin-right: 8px;
+  margin-bottom: 10px;
+  padding-top: 26px;
 `;
 
 // Hızlı buton
 export const QuickButton = styled.button<{ side: 'long' | 'short' }>`
-  padding: 6px 12px;
+  width: 50px;
+  height: 50px;
+  padding: 6px;
   border-radius: 6px;
   border: 1px solid #ffffff;
   font-weight: 400;
   font-size: 12px;
   cursor: pointer;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
@@ -170,13 +175,20 @@ export const QuickButton = styled.button<{ side: 'long' | 'short' }>`
 // Buton içeriği
 export const ButtonContent = styled.span`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  line-height: 1.2;
 `;
 
 // Silme butonu
 export const RemoveButton = styled.button`
-  width: 18px;
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
   height: 18px;
   display: flex;
   align-items: center;
@@ -213,12 +225,13 @@ export const ModalOverlay = styled.div`
 
 // Modal içeriği
 export const ModalContent = styled.div`
-  background-color: #242842;
+  background-color: #1b2839;
   border-radius: 8px;
   padding: 24px;
   width: 90%;
   max-width: 400px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #2c3142;
 `;
 
 // Modal başlığı
@@ -239,15 +252,37 @@ export const ModalTitle = styled.h3`
 
 // Modal kapatma butonu
 export const CloseModalButton = styled.button`
-  background: none;
-  border: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 1px solid #2c3142;
   color: #8f9bba;
-  font-size: 24px;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: all 0.2s;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  box-shadow: none;
   
   &:hover {
-    color: white;
+    color: #d7fb73;
+    border-color: #d7fb73;
+    background-color: transparent;
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+  
+  &:focus {
+    outline: none;
+    background-color: transparent;
   }
 `;
 
@@ -283,6 +318,18 @@ export const FormInput = styled.input`
   &::placeholder {
     color: #4a5568;
   }
+  
+  /* Chrome, Safari, Edge, Opera için ok işaretlerini kaldır */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  /* Firefox için ok işaretlerini kaldır */
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
 `;
 
 // Radio grup
@@ -310,16 +357,16 @@ export const RadioInput = styled.input`
 export const SaveButton = styled.button`
   width: 100%;
   padding: 10px 16px;
-  background-color: #d7fb73;
-  color: #1b2839;
-  border: none;
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid #d7fb73;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.2s;
   
   &:hover {
-    background-color: #c8ec64;
+    background-color: rgba(215, 251, 115, 0.1);
   }
   
   &:active {

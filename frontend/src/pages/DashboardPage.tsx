@@ -45,6 +45,14 @@ const LogoImage = styled.img`
   margin-top: -3px;
 `;
 
+const BetaTag = styled.span`
+  font-size: 14px;
+  font-weight: 500;
+  color: #d7fb73;
+  margin-left: -5px;
+  margin-top: 10px;
+`;
+
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
@@ -150,7 +158,7 @@ const PositionsContainer = styled.div`
   grid-column: 1 / span 2;
   grid-row: 2;
   height: 100%;
-  min-height: 0; /* Bu önemli, overflow'un çalışması için */
+  min-height: 0; /*  This is important, for the overflow to work */
   display: flex;
   flex-direction: column;
 `;
@@ -166,12 +174,46 @@ const Footer = styled.footer`
   text-align: center;
   font-size: 12px;
   color: #4b5563;
+  padding-top: 16px;
+  border-top: 1px solid rgba(215, 251, 115, 0.1);
+`;
+
+const SocialLinks = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 16px;
+`;
+
+const SocialLink = styled.a`
+  color: #8f9bba;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+  font-size: 12px;
+  
+  &:hover {
+    color: #d7fb73;
+  }
+`;
+
+const SocialIcon = styled.span`
+  margin-right: 8px;
+  font-size: 14px;
+`;
+
+const Copyright = styled.p`
+  margin: 0;
+  color: #4b5563;
+  font-size: 12px;
 `;
 
 const DashboardPage: React.FC = () => {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [copied, setCopied] = useState(false);
   
   // Create WebSocket connection
   useEffect(() => {
@@ -197,11 +239,24 @@ const DashboardPage: React.FC = () => {
     navigate('/profile');
   };
   
+  // Handle email copy
+  const handleEmailCopy = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigator.clipboard.writeText('support@quickytrade.com');
+    setCopied(true);
+    
+    // Reset copied state after 2 seconds
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000);
+  };
+  
   return (
     <DashboardContainer>
       <Header>
         <Logo>
           <LogoImage src="/Dashlogo.png" alt="QuickyTrade Logo" />
+          <BetaTag>(beta)</BetaTag>
         </Logo>
         <UserInfo>
           <UserEmail>{user?.email}</UserEmail>
@@ -232,7 +287,17 @@ const DashboardPage: React.FC = () => {
         </MainContent>
         
         <Footer>
-          © {new Date().getFullYear()} QuickyTrade Platform | All rights reserved
+          <SocialLinks>
+            <SocialLink href="https://x.com/quicky_trade" target="_blank" rel="noopener noreferrer">
+              <SocialIcon>𝕏</SocialIcon>
+              @quicky_trade
+            </SocialLink>
+            <SocialLink href="#" onClick={handleEmailCopy}>
+              <SocialIcon>✉️</SocialIcon>
+              {copied ? "Copied!" : "support@quickytrade.com"}
+            </SocialLink>
+          </SocialLinks>
+          <Copyright>© {new Date().getFullYear()} QuickyTrade Platform | All rights reserved</Copyright>
         </Footer>
       </ContentContainer>
     </DashboardContainer>

@@ -83,13 +83,13 @@ export const InfoTooltip = styled.div`
   position: absolute;
   top: 32px;
   right: 0;
-  background-color: #242842;
+  background-color: #1b2839;
   border: 1px solid #2c3142;
   border-radius: 6px;
-  padding: 12px;
+  padding: 16px;
   width: 280px;
   z-index: 10;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(215, 251, 115, 0.1);
   font-size: 12px;
   
   ul {
@@ -103,11 +103,23 @@ export const InfoTooltip = styled.div`
   }
   
   code {
-    background-color: #1b2839;
+    background-color: rgba(215, 251, 115, 0.1);
     padding: 2px 4px;
     border-radius: 4px;
     font-family: 'Courier New', monospace;
     color: #d7fb73;
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 6px;
+    border: 1px solid rgba(215, 251, 115, 0.1);
+    pointer-events: none;
   }
 `;
 

@@ -28,7 +28,7 @@ export const usePositions = (): UsePositionsReturn => {
     try {
       setLoading(true);
       const data = await positionsAPI.getPositions();
-      console.log('İlk pozisyonlar yüklendi:', data);
+      console.log('Positions were loaded:', data);
       
       const positionsArray = data.positions || [];
       
@@ -50,8 +50,8 @@ export const usePositions = (): UsePositionsReturn => {
       setInitialLoadComplete(true);
       setError(null);
     } catch (err) {
-      console.error('İlk pozisyon yükleme hatası:', err);
-      setError('Pozisyonlar yüklenirken bir hata oluştu');
+      console.error('Position Loading Error:', err);
+      setError('Please make your API connection to see your positions.');
     } finally {
       setLoading(false);
     }
@@ -118,7 +118,7 @@ export const usePositions = (): UsePositionsReturn => {
         return updatedPositions;
       });
     } catch (err) {
-      console.error('Pozisyon güncelleme hatası:', err);
+      console.error('Position update error:', err);
       // Hata olsa bile mevcut pozisyonları silme
     }
   }, [positions, initialLoadComplete, inputValues, fetchPositions]);
@@ -130,7 +130,7 @@ export const usePositions = (): UsePositionsReturn => {
       // Pozisyonları yeniden yükle
       fetchPositions();
     } catch (err) {
-      console.error('Pozisyon kapatılırken hata:', err);
+      console.error('Error closing a position:', err);
     }
   }, [fetchPositions]);
   
@@ -139,7 +139,7 @@ export const usePositions = (): UsePositionsReturn => {
     try {
       const quantity = inputValues[symbol]?.quantity;
       if (!quantity) {
-        console.error('Miktar belirtilmedi');
+        console.error('Amount not specified');
         return;
       }
       
@@ -147,7 +147,7 @@ export const usePositions = (): UsePositionsReturn => {
       // Pozisyonları yeniden yükle
       fetchPositions();
     } catch (err) {
-      console.error('Kısmi pozisyon kapatılırken hata:', err);
+      console.error('Error closing a partial position:', err);
     }
   }, [inputValues, fetchPositions]);
   
@@ -161,7 +161,7 @@ export const usePositions = (): UsePositionsReturn => {
       // Pozisyonları yeniden yükle
       fetchPositions();
     } catch (err) {
-      console.error('Tüm pozisyonlar kapatılırken hata:', err);
+      console.error('Error closing all positions:', err);
     }
   }, [positions, fetchPositions]);
 

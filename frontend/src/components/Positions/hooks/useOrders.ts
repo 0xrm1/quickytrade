@@ -15,7 +15,7 @@ export const useOrders = (): UseOrdersReturn => {
       // API henüz eklenmediği için boş bir dizi döndür
       setOpenOrders([]);
     } catch (err) {
-      console.error('Açık emirler yüklenirken hata:', err);
+      console.error('Error loading open orders:', err);
       // Hata olsa bile mevcut emirleri silme
     }
   }, []);

@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { QuickButtonProps } from '../types';
 import * as S from '../styles';
 
 /**
  * Buton etiketini formatla
  */
-const formatButtonLabel = (symbol: string, amount: number): string => {
+const formatButtonLabel = (symbol: string, amount: number): ReactElement => {
   const symbolBase = symbol.replace('USDT', '');
   const amountStr = amount >= 1000 
     ? `${(amount / 1000).toFixed(1)}K` 
     : amount.toString();
   
-  return `${symbolBase} ${amountStr}`;
+  return (
+    <>
+      <div>{symbolBase}</div>
+      <div>{amountStr}</div>
+    </>
+  );
 };
 
 /**

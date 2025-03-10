@@ -11,9 +11,9 @@ const TerminalOutput = forwardRef<HTMLDivElement, TerminalOutputProps>(
       <S.TerminalOutputContainer ref={ref}>
         {output.length === 0 ? (
           <div style={{ color: '#e2e8f0', padding: '4px 0' }}>
-            Welcome to QuickyTrade Terminal
+            open position with command
             <br /><br />
-            Type "help" for available commands
+            e.g. L btc 10000
           </div>
         ) : (
           output.map((item, index) => (

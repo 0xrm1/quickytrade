@@ -138,9 +138,6 @@ const ApiKeyManager: React.FC = () => {
         <p>
           Your API keys are encrypted and stored securely. They are only used to interact with the Binance API on your behalf.
         </p>
-        <p>
-          <strong>Note:</strong> For security reasons, we recommend creating API keys with read-only permissions if you don't need trading functionality.
-        </p>
       </ApiKeyInfo>
     </ApiKeyContainer>
   );

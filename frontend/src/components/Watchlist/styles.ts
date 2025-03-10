@@ -327,9 +327,9 @@ export const SymbolInput = styled.input`
 `;
 
 export const SubmitButton = styled.button`
-  background-color: #d7fb73;
-  color: #1b2839;
-  border: none;
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid #d7fb73;
   border-radius: 4px;
   padding: 5px 8px;
   font-size: 12px;
@@ -338,7 +338,7 @@ export const SubmitButton = styled.button`
   transition: all 0.2s;
   
   &:hover {
-    background-color: #c8ec64;
+    background-color: rgba(215, 251, 115, 0.1);
   }
   
   &:active {
@@ -395,36 +395,59 @@ export const ModalOverlay = styled.div`
 export const ModalContent = styled.div`
   background-color: #1b2839;
   border-radius: 8px;
-  padding: 16px;
+  padding: 24px;
   width: 90%;
   max-width: 300px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #2c3142;
 `;
 
 export const ModalHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 `;
 
 export const ModalTitle = styled.h3`
   margin: 0;
   color: white;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
 `;
 
 export const CloseModalButton = styled.button`
-  background: none;
-  border: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 1px solid #2c3142;
   color: #8f9bba;
-  font-size: 20px;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: all 0.2s;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  box-shadow: none;
   
   &:hover {
     color: #d7fb73;
+    border-color: #d7fb73;
+    background-color: transparent;
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+  
+  &:focus {
+    outline: none;
+    background-color: transparent;
   }
 `;
 
@@ -470,17 +493,17 @@ export const FormInput = styled.input`
 
 export const SaveButton = styled.button`
   width: 100%;
-  padding: 8px 12px;
-  background-color: #d7fb73;
-  color: #1b2839;
-  border: none;
-  border-radius: 4px;
-  font-weight: 500;
+  padding: 10px 16px;
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid #d7fb73;
+  border-radius: 6px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   
   &:hover {
-    background-color: #c8ec64;
+    background-color: rgba(215, 251, 115, 0.1);
   }
   
   &:active {
