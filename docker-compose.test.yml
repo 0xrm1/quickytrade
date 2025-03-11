@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  api-gateway-test:
+    build:
+      context: ./services/api-gateway
+      target: test
+    environment:
+      - NODE_ENV=test
+      - API_GATEWAY_PORT=5000
+      - AUTH_SERVICE_URL=http://auth-service-test:5002
+      - BINANCE_API_SERVICE_URL=http://binance-api-service-test:5001
+      - REDIS_HOST=redis-test
+      - REDIS_PORT=6379
+    depends_on:
+      - redis-test
+      - auth-service-test
+      - binance-api-service-test
+    networks:
+      - quickytrade-test-network
+
+  auth-service-test:
+    build:
+      context: ./services/auth-service
+      target: test
+    environment:
+      - NODE_ENV=test
+      - AUTH_SERVICE_PORT=5002
+      - MONGODB_URI=mongodb://mongodb-test:27017/quickytrade_test
+      - JWT_SECRET=test_jwt_secret
+      - REDIS_HOST=redis-test
+      - REDIS_PORT=6379
+    depends_on:
+      - mongodb-test
+      - redis-test
+    networks:
+      - quickytrade-test-network
+
+  binance-api-service-test:
+    build:
+      context: ./services/binance-api
+      target: test
+    environment:
+      - NODE_ENV=test
+      - BINANCE_API_PORT=5001
+      - BINANCE_API_KEY=test_api_key
+      - BINANCE_API_SECRET=test_api_secret
+      - REDIS_HOST=redis-test
+      - REDIS_PORT=6379
+      - PRICE_CHANGE_THRESHOLD=0.1
+      - VOLUME_CHANGE_THRESHOLD=1.0
+    depends_on:
+      - redis-test
+    networks:
+      - quickytrade-test-network
+
+  mongodb-test:
+    image: mongo:6.0
+    command: mongod --nojournal --quiet
+    tmpfs:
+      - /data/db
+    networks:
+      - quickytrade-test-network
+
+  redis-test:
+    image: redis:7.0-alpine
+    command: redis-server --save ""
+    tmpfs:
+      - /data
+    networks:
+      - quickytrade-test-network
+
+networks:
+  quickytrade-test-network:
+    driver: bridge 
