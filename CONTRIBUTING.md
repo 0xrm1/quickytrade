@@ -1,157 +1,131 @@
-# Contribution Guide
+# Contributing to QuickyTrade
 
-This document is a guide for those who want to contribute to the project. Please read this document before contributing to the project.
+First off, thank you for considering contributing to QuickyTrade! It's people like you that make QuickyTrade such a great tool.
 
-## Before You Start
+## Code of Conduct
 
-Before contributing to the project, it is recommended that you read the following documents:
+This project and everyone participating in it is governed by our [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
-- [README.md](README.md): General information about the project
-- [ARCHITECTURE.md](ARCHITECTURE.md): The architectural structure of the project
+## How Can I Contribute?
 
-## Development Environment Setup
+### Reporting Bugs
 
-1. Fork the project
-2. Clone it to your local machine:
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/trading-platform.git
-   cd trading-platform
-   ```
-3. Install dependencies:
-   ```bash
-   # Frontend dependencies
-   cd frontend
-   npm install
+This section guides you through submitting a bug report for QuickyTrade. Following these guidelines helps maintainers and the community understand your report, reproduce the behavior, and find related reports.
 
-   # Backend dependencies
-   cd ../backend
-   npm install
-   ```
-4. Start the development environment:
-   ```bash
-   # Start the backend
-   cd backend
-   npm run dev
+Before creating bug reports, please check [this list](#before-submitting-a-bug-report) as you might find out that you don't need to create one. When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report).
 
-   # Open a new terminal and start the frontend
-   cd frontend
-   npm start
-   ```
+#### Before Submitting A Bug Report
 
-## Coding Rules
+* Check the [documentation](README.md).
+* Check if you can reproduce the problem in the latest version.
+* Search the [issues](https://github.com/0xrm1/quickytrade/issues) to see if the problem has already been reported.
 
-### General Rules
+#### How Do I Submit A Good Bug Report?
 
-1. **Clean Code**: Your code should be clean, readable, and understandable.
-2. **Modularity**: Your code should be modular and follow the existing modular structure.
-3. **Single Responsibility**: Each function and component should have a single responsibility.
-4. **Descriptive Naming**: Variables, functions, and components should have descriptive names.
-5. **Comments**: Add comments explaining complex code blocks.
+Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue and provide the following information:
 
-### Frontend Rules
+* Use a clear and descriptive title
+* Describe the exact steps which reproduce the problem
+* Provide specific examples to demonstrate the steps
+* Describe the behavior you observed after following the steps
+* Explain which behavior you expected to see instead and why
+* Include screenshots and animated GIFs if possible
+* Include your environment details (OS, Node.js version, etc.)
 
-1. **Component Structure**: New components should follow the existing modular structure:
-   ```
-   ComponentName/
-   ├── components/     # Subcomponents
-   ├── hooks/          # Component-specific hooks
-   ├── styles.ts       # Styled components
-   ├── types.ts        # TypeScript types
-   └── index.tsx       # Main component
-   ```
-2. **TypeScript**: All new code must be written with TypeScript.
-3. **Style Rules**: CSS styles should follow the modular structure.
-4. **Responsive Design**: All UI components must be responsive.
+### Suggesting Enhancements
 
-### Backend Rules
+This section guides you through submitting an enhancement suggestion for QuickyTrade, including completely new features and minor improvements to existing functionality.
 
-1. **API Structure**: New API endpoints should follow the existing structure.
-2. **Error Management**: All error conditions should be handled appropriately.
-3. **Validation**: All user inputs must be validated.
-4. **Security**: Security is the top priority.
+#### Before Submitting An Enhancement Suggestion
 
-## Commit Messages
+* Check if the enhancement has already been suggested or implemented.
+* Check if there's already a package that provides that enhancement.
 
-Commit messages should be in the following format:
+#### How Do I Submit A Good Enhancement Suggestion?
 
-```
-<type>(<scope>): <subject>
+Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue and provide the following information:
 
-<body>
+* Use a clear and descriptive title
+* Provide a detailed description of the suggested enhancement
+* Provide specific examples to demonstrate the steps
+* Describe the current behavior and explain which behavior you expected to see instead
+* Explain why this enhancement would be useful
+* List some other applications where this enhancement exists, if applicable
+* Include screenshots and animated GIFs if relevant
 
-<footer>
-```
+### Pull Requests
 
-Example:
+* Fill in the required template
+* Do not include issue numbers in the PR title
+* Follow the [styleguides](#styleguides)
+* Include screenshots and animated GIFs in your pull request whenever possible
 
-```
-feat(watchlist): add new filter functionality
+## Styleguides
 
-- Add filter by price range
-- Add filter by price change
-- Update UI to include filter controls
+### Git Commit Messages
 
-Closes #123
-```
+* Use the present tense ("Add feature" not "Added feature")
+* Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
+* Limit the first line to 72 characters or less
+* Reference issues and pull requests liberally after the first line
+* Consider starting the commit message with an applicable emoji:
+    * 🎨 `:art:` when improving the format/structure of the code
+    * 🐎 `:racehorse:` when improving performance
+    * 🚱 `:non-potable_water:` when plugging memory leaks
+    * 📝 `:memo:` when writing docs
+    * 🐛 `:bug:` when fixing a bug
+    * 🔥 `:fire:` when removing code or files
+    * 💚 `:green_heart:` when fixing the CI build
+    * ✅ `:white_check_mark:` when adding tests
+    * 🔒 `:lock:` when dealing with security
+    * ⬆️ `:arrow_up:` when upgrading dependencies
+    * ⬇️ `:arrow_down:` when downgrading dependencies
 
-### Commit Types
+### JavaScript Styleguide
 
-- **feat**: New feature
-- **fix**: Bug fix
-- **docs**: Only documentation changes
-- **style**: Code changes that do not affect the code behavior (e.g., formatting, whitespace, etc.)
-- **refactor**: Code changes that do not fix bugs or add features
-- **perf**: Performance improvements
-- **test**: Test addition or correction
-- **chore**: Build changes, dependency updates, etc.
+* Use TypeScript
+* Use semicolons
+* 2 spaces for indentation
+* Prefer `const` over `let`
+* Use template literals instead of string concatenation
+* Use arrow functions over anonymous function expressions
+* Use async/await over Promise chains
+* Add trailing commas
+* Use meaningful variable names
 
-## Pull Request Process
+### Documentation Styleguide
 
-1. Create a new branch:
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
-2. Commit your changes:
-   ```bash
-   git commit -m "feat(component): add amazing feature"
-   ```
-3. Push your branch:
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-4. Create a Pull Request on GitHub
-5. Your Pull Request will be reviewed and, if necessary, changes may be requested
-6. Once your changes are complete, your Pull Request will be merged into the main branch
+* Use [Markdown](https://guides.github.com/features/mastering-markdown/)
+* Reference methods and classes in markdown with the following syntax:
+    * Class: `ClassName`
+    * Method: `Class#methodName`
+* Use one line per sentence in documentation files
 
-## Code Review Process
+## Additional Notes
 
-All Pull Requests should be reviewed by at least one person. The code review process is as follows:
+### Issue and Pull Request Labels
 
-1. Is the code consistent with the project's overall structure and coding rules?
-2. Does the code correctly implement the specified functionality?
-3. Is the code appropriate in terms of performance and security?
-4. Is the code sufficiently tested?
+This section lists the labels we use to help us track and manage issues and pull requests.
 
-## Test Process
+#### Type of Issue and Issue State
 
-All new features and bug fixes should be supported by appropriate tests:
+* `enhancement`: Feature requests
+* `bug`: Confirmed bugs or reports that are very likely to be bugs
+* `question`: Questions more than bug reports or feature requests
+* `feedback`: General feedback
+* `help-wanted`: The core team would appreciate help from the community in resolving these issues
+* `beginner`: Less complex issues which would be good first issues to work on for users who want to contribute
+* `more-information-needed`: More information needs to be collected about these problems or feature requests
+* `needs-reproduction`: Likely bugs, but haven't been reliably reproduced
+* `blocked`: Issues blocked on other issues
+* `duplicate`: Issues which are duplicates of other issues
+* `wontfix`: The core team has decided not to fix these issues for now
+* `invalid`: Issues which aren't valid (e.g., user errors)
 
-1. **Unit Tests**: Unit tests for components and hooks
-2. **Integration Tests**: Integration tests for interactions between components
-3. **E2E Tests**: End-to-end tests for user scenarios
+#### Pull Request Labels
 
-## Version Management
-
-The project follows the principles of [Semantic Versioning](https://semver.org/):
-
-- **MAJOR**: Backward-incompatible API changes
-- **MINOR**: Backward-compatible new functionality
-- **PATCH**: Backward-compatible bug fixes
-
-## Contact
-
-For questions or suggestions, please create a GitHub issue or contact the project managers.
-
-## Thanks
-
-Thanks for contributing to the project! Your contributions will help the project grow. 
+* `work-in-progress`: Pull requests which are still being worked on, more changes will follow
+* `needs-review`: Pull requests which need code review, and approval from maintainers
+* `under-review`: Pull requests being reviewed by maintainers
+* `requires-changes`: Pull requests which need to be updated based on review comments
+* `needs-testing`: Pull requests which need manual testing 
