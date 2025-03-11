@@ -1,0 +1,92 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/binance/(.*)",
+      "dest": "http://localhost:5001/api/$1"
+    },
+    {
+      "src": "/api/auth/(.*)",
+      "dest": "http://localhost:5002/api/auth/$1"
+    },
+    {
+      "src": "/api/users/(.*)",
+      "dest": "http://localhost:5002/api/users/$1"
+    },
+    {
+      "src": "/graphql",
+      "dest": "http://localhost:5000/graphql"
+    },
+    {
+      "src": "/ws",
+      "dest": "http://localhost:5000/ws"
+    },
+    {
+      "src": "/health",
+      "dest": "http://localhost:5000/health"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://quickytrade.vercel.app"
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/_next/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+} 

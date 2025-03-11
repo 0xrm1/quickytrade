@@ -1,3 +1,39 @@
-- Don't use %%%. In Powershell you have to give commands one by one.
-- Don't take the initiative and change the code.
-- After performing the commands, briefly and succinctly explain what you have done. don't be long-winded
+Task:
+I want you to optimize and restructure the architecture of my application based on the provided optimization document.
+
+Steps to Follow:
+1️⃣ Read and Analyze the Optimization Plan:
+
+Carefully review the QuickyTrade Performance and Architecture Optimization Plan.
+Identify which files and parts of the codebase need modification based on the plan.
+2️⃣ Break Down the Tasks into Small Steps:
+
+Since the project consists of a large number of files and code, divide the implementation into small, manageable tasks.
+Specify which files need changes and what kind of modifications are required.
+For each task, clearly define the expected output and impact.
+3️⃣ Create a Step-by-Step Implementation Plan:
+
+Outline a detailed plan of execution, listing tasks in logical order.
+Example format:
+📌 Task: Optimize WebSocket connections
+📍 File: /src/services/socket.js
+🔹 Modification: Implement WebSocket connection sharing
+4️⃣ Execute Each Step One by One:
+
+Once the plan is ready, start implementing each step in sequence.
+Mark completed tasks with a ✅ checkmark.
+5️⃣ Prevent Data/Code Loss:
+
+The transition should be smooth and secure.
+Maintain backups and avoid disruptive changes.
+Key Optimization Areas to Focus On:
+API Optimization: Minimize REST API calls, implement caching, and use GraphQL.
+WebSocket Optimization: Reduce WebSocket load, compress messages, and update only when necessary.
+Redis Caching Strategy: Implement threshold-based updates for price data.
+Next.js Migration: Transition from React SPA to Next.js with SSR and ISR.
+Microservices Refactoring: Modularize the backend by separating authentication and Binance API services.
+Server & CDN Optimization: Improve load balancing, use Vercel/Cloudflare, and optimize API loads.
+Final Goal:
+Once this optimization plan is fully implemented, QuickyTrade should have top-tier speed, efficiency, and scalability, ready to handle real-time trading data efficiently. 🚀
+
+Let me know once you've analyzed the plan and are ready to proceed with implementation! ✅
