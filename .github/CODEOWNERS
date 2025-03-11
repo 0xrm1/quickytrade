@@ -1,0 +1,31 @@
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+# they will be requested for review when someone opens a pull request.
+*       @0xrm1
+
+# API Gateway service
+/services/api-gateway/    @0xrm1
+
+# Auth service
+/services/auth-service/    @0xrm1
+
+# Binance API service
+/services/binance-api/    @0xrm1
+
+# Nginx configuration
+/nginx/    @0xrm1
+
+# GitHub Actions workflows
+/.github/workflows/    @0xrm1
+
+# Documentation
+*.md    @0xrm1
+/docs/    @0xrm1
+
+# Docker configuration
+Dockerfile    @0xrm1
+docker-compose*.yml    @0xrm1
+
+# Security-related files
+/security/    @0xrm1
+SECURITY.md    @0xrm1 
